@@ -95,7 +95,7 @@ export default async function PlaygroundPage({
 
   const agent = await fetchPlaygroundAgent(slug, session.jwt);
   const isPrivateOwnerAgent = agent.visibility === "private";
-  const collectionHref = isPrivateOwnerAgent ? "/hub?tab=agents" : "/registry";
+  const collectionHref = isPrivateOwnerAgent ? "/hub/agents" : "/registry";
   const collectionLabel = isPrivateOwnerAgent ? copy.myAgent : copy.market;
   const callable = isPlaygroundAgentCallable(agent);
 

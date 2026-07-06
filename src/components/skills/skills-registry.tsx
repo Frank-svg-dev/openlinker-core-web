@@ -117,7 +117,7 @@ export function SkillsRegistry({ locale, skills }: { locale: Locale; skills: Ski
           pathTitle: "使用路径",
           paths: [
             ["Registry 按 Skill 搜索", "/registry"],
-            ["管理 Agent Skill 声明", "/hub?tab=skills"],
+            ["管理 Agent Skill 声明", "/hub/skills"],
             ["接入 Agent 声明 Skill", "/publish"],
             ["MCP/API 接入说明", "/connect"],
           ],
@@ -179,7 +179,7 @@ export function SkillsRegistry({ locale, skills }: { locale: Locale; skills: Ski
           pathTitle: "Usage path",
           paths: [
             ["Search Registry by Skill", "/registry"],
-            ["Manage Agent Skill claims", "/hub?tab=skills"],
+            ["Manage Agent Skill claims", "/hub/skills"],
             ["Declare Skills for an Agent", "/publish"],
             ["MCP/API integration guide", "/connect"],
           ],

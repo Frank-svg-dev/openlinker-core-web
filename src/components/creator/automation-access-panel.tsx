@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { useApi } from "@/hooks/use-api";
@@ -29,16 +29,51 @@ interface Approval {
   expires_at: string;
 }
 
-export function AutomationAccessPanel() {
+type AgentTokenSortBy = "created_at" | "last_used_at" | "expires_at" | "name" | "status";
+type SortDir = "asc" | "desc";
+
+interface AgentTokenListResponse {
+  items: BootstrapToken[];
+  total: number;
+  limit: number;
+  offset: number;
+  sort_by: AgentTokenSortBy;
+  sort_dir: SortDir;
+  has_more: boolean;
+}
+
+const AGENT_TOKEN_PAGE_SIZE = 8;
+type AutomationAccessSection = "all" | "create" | "tokens" | "approvals";
+
+export function AgentTokenCreatePanel() {
+  return <AutomationAccessPanel section="create" />;
+}
+
+export function AgentTokenListPanel() {
+  return <AutomationAccessPanel section="tokens" />;
+}
+
+export function ApprovalRequestsPanel() {
+  return <AutomationAccessPanel section="approvals" />;
+}
+
+export function AutomationAccessPanel({
+  section = "all",
+}: {
+  section?: AutomationAccessSection;
+}) {
   const locale = useClientLocale();
   const copy =
     locale === "zh"
       ? {
           created: "Agent Token 已生成，仅本次显示明文",
           createFailed: "生成失败",
+          loadFailed: "读取 Agent Token 失败",
           approved: "审批已确认",
           rejected: "审批已拒绝",
           handleFailed: "处理失败",
+          sessionLoading: "登录状态加载中，请稍后再试",
+          sessionMissing: "登录状态不可用，请重新登录后再试",
           copiedPrompt: "已复制接入启动包",
           copiedToken: "已复制邀请令牌",
           copyFailed: "复制失败，请手动选中",
@@ -57,6 +92,19 @@ export function AutomationAccessPanel() {
           tokenBoundary: "此 Token 只能用于",
           tokenBoundarySuffix: "注册并运行 Agent；完整接入步骤请看",
           generated: (n: number) => `已生成 ${n} 个 Agent Token 记录。此 Token 仅用于 Agent 注册与运行，不能用于 MCP/API 调用。`,
+          sortBy: "排序",
+          sortDir: "方向",
+          sortCreated: "创建时间",
+          sortLastUsed: "最近使用",
+          sortExpires: "过期时间",
+          sortName: "名称",
+          sortStatus: "状态",
+          sortDesc: "降序",
+          sortAsc: "升序",
+          loading: "加载中...",
+          pageSummary: (start: number, end: number, total: number) => `第 ${start}-${end} 条，共 ${total} 条`,
+          previous: "上一页",
+          next: "下一页",
           approvals: "待处理审批",
           noApprovals: "暂无待处理的高风险动作请求。",
           revokeToken: "撤销",
@@ -69,9 +117,12 @@ export function AutomationAccessPanel() {
       : {
           created: "Agent Token created. Plaintext is shown only once.",
           createFailed: "Failed to create invite",
+          loadFailed: "Failed to load Agent Tokens",
           approved: "Approval confirmed",
           rejected: "Approval rejected",
           handleFailed: "Failed to process request",
+          sessionLoading: "Sign-in session is still loading. Try again in a moment.",
+          sessionMissing: "Sign-in session is unavailable. Sign in again and retry.",
           copiedPrompt: "Startup packet copied",
           copiedToken: "Invite token copied",
           copyFailed: "Copy failed. Select it manually.",
@@ -90,6 +141,19 @@ export function AutomationAccessPanel() {
           tokenBoundary: "This token can only call",
           tokenBoundarySuffix: "to register and run an Agent. For the full onboarding steps, see",
           generated: (n: number) => `${n} Agent Token records generated. They are only for Agent registration and runtime, not MCP/API calls.`,
+          sortBy: "Sort",
+          sortDir: "Direction",
+          sortCreated: "Created",
+          sortLastUsed: "Last used",
+          sortExpires: "Expires",
+          sortName: "Name",
+          sortStatus: "Status",
+          sortDesc: "Descending",
+          sortAsc: "Ascending",
+          loading: "Loading...",
+          pageSummary: (start: number, end: number, total: number) => `${start}-${end} of ${total}`,
+          previous: "Previous",
+          next: "Next",
           approvals: "Pending approvals",
           noApprovals: "No pending high-risk action requests.",
           revokeToken: "Revoke",
@@ -99,42 +163,97 @@ export function AutomationAccessPanel() {
           reject: "Reject",
           confirm: "Confirm",
         };
-  const { fetch: apiFetch } = useApi();
+  const { fetch: apiFetch, isAuthenticated, isLoading: sessionLoading } = useApi();
   const [tokens, setTokens] = useState<BootstrapToken[]>([]);
+  const [tokenTotal, setTokenTotal] = useState(0);
+  const [tokenOffset, setTokenOffset] = useState(0);
+  const [tokenSortBy, setTokenSortBy] = useState<AgentTokenSortBy>("created_at");
+  const [tokenSortDir, setTokenSortDir] = useState<SortDir>("desc");
+  const [tokenLoading, setTokenLoading] = useState(false);
   const [approvals, setApprovals] = useState<Approval[]>([]);
   const [revealed, setRevealed] = useState<string | null>(null);
   const [copiedKind, setCopiedKind] = useState<"prompt" | "token" | null>(null);
   const [revokingTokenId, setRevokingTokenId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const showCreate = section === "all" || section === "create";
+  const showTokens = section === "all" || section === "tokens";
+  const showApprovals = section === "all" || section === "approvals";
 
-  const load = async () => {
-    const [tokenData, approvalData] = await Promise.all([
-      apiFetch<{ items: BootstrapToken[] }>("/api/v1/creator/agent-tokens"),
-      apiFetch<{ items: Approval[] }>("/api/v1/creator/approvals"),
-    ]);
-    setTokens(tokenData.items ?? []);
-    setApprovals(approvalData.items ?? []);
-  };
+  const load = useCallback(async (next: Partial<{ offset: number; sortBy: AgentTokenSortBy; sortDir: SortDir }> = {}) => {
+    if (!showTokens && !showApprovals) return;
+    if (sessionLoading) return;
+    if (!isAuthenticated) {
+      toast.error(copy.sessionMissing);
+      return;
+    }
+    const nextOffset = next.offset ?? tokenOffset;
+    const nextSortBy = next.sortBy ?? tokenSortBy;
+    const nextSortDir = next.sortDir ?? tokenSortDir;
+    setTokenLoading(true);
+    const params = new URLSearchParams({
+      limit: String(AGENT_TOKEN_PAGE_SIZE),
+      offset: String(nextOffset),
+      sort_by: nextSortBy,
+      sort_dir: nextSortDir,
+    });
+    try {
+      const [tokenData, approvalData] = await Promise.all([
+        showTokens
+          ? apiFetch<AgentTokenListResponse>(`/api/v1/creator/agent-tokens?${params.toString()}`)
+          : Promise.resolve(null),
+        showApprovals
+          ? apiFetch<{ items: Approval[] }>("/api/v1/creator/approvals")
+          : Promise.resolve(null),
+      ]);
+      if (tokenData) {
+        setTokens(tokenData.items ?? []);
+        setTokenTotal(Number.isFinite(tokenData.total) ? tokenData.total : 0);
+        setTokenOffset(Number.isFinite(tokenData.offset) ? tokenData.offset : nextOffset);
+        setTokenSortBy(tokenData.sort_by ?? nextSortBy);
+        setTokenSortDir(tokenData.sort_dir ?? nextSortDir);
+      }
+      if (approvalData) {
+        setApprovals(approvalData.items ?? []);
+      }
+    } finally {
+      setTokenLoading(false);
+    }
+  }, [
+    apiFetch,
+    copy.sessionMissing,
+    isAuthenticated,
+    sessionLoading,
+    showApprovals,
+    showTokens,
+    tokenOffset,
+    tokenSortBy,
+    tokenSortDir,
+  ]);
 
   useEffect(() => {
     let cancelled = false;
-    void Promise.all([
-      apiFetch<{ items: BootstrapToken[] }>("/api/v1/creator/agent-tokens"),
-      apiFetch<{ items: Approval[] }>("/api/v1/creator/approvals"),
-    ])
-      .then(([tokenData, approvalData]) => {
-        if (!cancelled) {
-          setTokens(tokenData.items ?? []);
-          setApprovals(approvalData.items ?? []);
-        }
+    void Promise.resolve()
+      .then(() => load())
+      .catch((error) => {
+        if (!cancelled) toast.error(localizedErrorMessage(error, locale, copy.loadFailed));
       })
-      .catch(() => undefined);
+      .finally(() => {
+        if (!cancelled) setTokenLoading(false);
+      });
     return () => {
       cancelled = true;
     };
-  }, [apiFetch]);
+  }, [copy.loadFailed, load, locale]);
 
   const mintToken = async () => {
+    if (sessionLoading) {
+      toast.error(copy.sessionLoading);
+      return;
+    }
+    if (!isAuthenticated) {
+      toast.error(copy.sessionMissing);
+      return;
+    }
     setBusy(true);
     try {
       const token = await apiFetch<BootstrapToken>("/api/v1/creator/agent-tokens", {
@@ -142,7 +261,13 @@ export function AutomationAccessPanel() {
         body: { name: "Agent self-registration", expires_in_minutes: 30 },
       });
       setRevealed(token.plaintext_token ?? null);
-      await load();
+      if (!showTokens) {
+        setTokenTotal((value) => value + 1);
+      } else if (tokenOffset === 0) {
+        await load({ offset: 0 });
+      } else {
+        setTokenOffset(0);
+      }
       toast.success(copy.created);
     } catch (error) {
       toast.error(localizedErrorMessage(error, locale, copy.createFailed));
@@ -168,7 +293,14 @@ export function AutomationAccessPanel() {
     setRevokingTokenId(id);
     try {
       await apiFetch(`/api/v1/creator/agent-tokens/${id}`, { method: "DELETE" });
-      await load();
+      const nextOffset = tokens.length <= 1 && tokenOffset > 0
+        ? Math.max(0, tokenOffset - AGENT_TOKEN_PAGE_SIZE)
+        : tokenOffset;
+      if (nextOffset !== tokenOffset) {
+        setTokenOffset(nextOffset);
+      } else {
+        await load({ offset: nextOffset });
+      }
       toast.success(copy.tokenRevoked);
     } catch (error) {
       toast.error(localizedErrorMessage(error, locale, copy.tokenRevokeFailed));
@@ -190,24 +322,30 @@ export function AutomationAccessPanel() {
 
   const pending = approvals.filter((item) => item.status === "pending");
   const agentPrompt = revealed ? buildSelfRegistrationPrompt(revealed, locale) : "";
+  const tokenPageStart = tokenTotal === 0 ? 0 : tokenOffset + 1;
+  const tokenPageEnd = tokenTotal === 0 ? 0 : Math.min(tokenOffset + tokens.length, tokenTotal);
+  const canPreviousTokenPage = tokenOffset > 0 && !tokenLoading;
+  const canNextTokenPage = tokenOffset + AGENT_TOKEN_PAGE_SIZE < tokenTotal && !tokenLoading;
 
   return (
     <div className="ol-panel ol-panel-pad space-y-5">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <strong className="text-[15px] font-black">{copy.title}</strong>
-          <p className="mt-1 text-[12.5px] text-[color:var(--ol-muted)]">
-            {copy.bodyPrefix}{" "}
-            <Link href="/publish" className="font-bold text-[color:var(--ol-primary-dark)] hover:underline">{copy.publish}</Link>{locale === "zh" ? "。" : ". "}
-            {copy.bodySuffix}
-          </p>
+      {showCreate ? (
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <strong className="text-[15px] font-black">{copy.title}</strong>
+            <p className="mt-1 text-[12.5px] text-[color:var(--ol-muted)]">
+              {copy.bodyPrefix}{" "}
+              <Link href="/publish" className="font-bold text-[color:var(--ol-primary-dark)] hover:underline">{copy.publish}</Link>{locale === "zh" ? "。" : ". "}
+              {copy.bodySuffix}
+            </p>
+          </div>
+          <button type="button" onClick={mintToken} disabled={busy || sessionLoading} className="ol-mini-btn ol-mini-btn-primary">
+            {busy ? copy.creating : copy.create}
+          </button>
         </div>
-        <button type="button" onClick={mintToken} disabled={busy} className="ol-mini-btn ol-mini-btn-primary">
-          {busy ? copy.creating : copy.create}
-        </button>
-      </div>
+      ) : null}
 
-      {revealed ? (
+      {showCreate && revealed ? (
         <div className="rounded-xl border border-[color:var(--ol-primary)]/25 bg-[color:var(--ol-soft)] p-3">
           <p className="text-[11.5px] font-bold text-[color:var(--ol-muted)]">
             {copy.secretOnce}
@@ -243,61 +381,125 @@ export function AutomationAccessPanel() {
         </div>
       ) : null}
 
-      <div className="text-[12px] text-[color:var(--ol-muted)]">
-        {copy.generated(tokens.length)}
-      </div>
-      {tokens.length > 0 ? (
-        <div className="grid gap-2">
-          {tokens.slice(0, 8).map((token) => {
-            const revoked = Boolean(token.revoked_at);
-            return (
-              <div
-                key={token.id}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[color:var(--ol-line)] bg-white px-3 py-2"
-              >
-                <div className="min-w-0">
-                  <div className="truncate text-[12.5px] font-black text-[color:var(--ol-ink)]">
-                    {token.name}
-                  </div>
-                  <div className="mt-1 flex flex-wrap items-center gap-2">
-                    <code className="rounded bg-[color:var(--ol-soft)] px-1.5 py-0.5 text-[11px]">
-                      {token.prefix}
-                    </code>
-                    <span className="ol-chip">{agentTokenStatusLabel(token, locale)}</span>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => void revokeAgentToken(token.id)}
-                  disabled={revoked || revokingTokenId === token.id}
-                  className="ol-mini-btn bg-[#fde7e7] text-[#d93b3b] hover:bg-[#fbd5d5] disabled:cursor-not-allowed disabled:bg-[color:var(--ol-soft)] disabled:text-[color:var(--ol-subtle)]"
+      {showTokens ? (
+        <>
+          <div className="text-[12px] text-[color:var(--ol-muted)]">
+            {copy.generated(tokenTotal)}
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-3 text-[12px] font-bold text-[color:var(--ol-muted)]">
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="inline-flex items-center gap-1.5">
+                <span>{copy.sortBy}</span>
+                <select
+                  value={tokenSortBy}
+                  disabled={tokenLoading}
+                  onChange={(event) => {
+                    setTokenSortBy(event.target.value as AgentTokenSortBy);
+                    setTokenOffset(0);
+                  }}
+                  className="h-8 rounded-lg border border-[color:var(--ol-line)] bg-white px-2 text-[12px] font-bold text-[color:var(--ol-ink)]"
                 >
-                  {revokingTokenId === token.id ? copy.revokingToken : copy.revokeToken}
-                </button>
-              </div>
-            );
-          })}
-        </div>
+                  <option value="created_at">{copy.sortCreated}</option>
+                  <option value="last_used_at">{copy.sortLastUsed}</option>
+                  <option value="expires_at">{copy.sortExpires}</option>
+                  <option value="name">{copy.sortName}</option>
+                  <option value="status">{copy.sortStatus}</option>
+                </select>
+              </label>
+              <label className="inline-flex items-center gap-1.5">
+                <span>{copy.sortDir}</span>
+                <select
+                  value={tokenSortDir}
+                  disabled={tokenLoading}
+                  onChange={(event) => {
+                    setTokenSortDir(event.target.value as SortDir);
+                    setTokenOffset(0);
+                  }}
+                  className="h-8 rounded-lg border border-[color:var(--ol-line)] bg-white px-2 text-[12px] font-bold text-[color:var(--ol-ink)]"
+                >
+                  <option value="desc">{copy.sortDesc}</option>
+                  <option value="asc">{copy.sortAsc}</option>
+                </select>
+              </label>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span>{tokenLoading ? copy.loading : copy.pageSummary(tokenPageStart, tokenPageEnd, tokenTotal)}</span>
+              <button
+                type="button"
+                disabled={!canPreviousTokenPage}
+                onClick={() => setTokenOffset(Math.max(0, tokenOffset - AGENT_TOKEN_PAGE_SIZE))}
+                className="ol-mini-btn disabled:cursor-not-allowed disabled:bg-[color:var(--ol-soft)] disabled:text-[color:var(--ol-subtle)]"
+              >
+                {copy.previous}
+              </button>
+              <button
+                type="button"
+                disabled={!canNextTokenPage}
+                onClick={() => setTokenOffset(tokenOffset + AGENT_TOKEN_PAGE_SIZE)}
+                className="ol-mini-btn disabled:cursor-not-allowed disabled:bg-[color:var(--ol-soft)] disabled:text-[color:var(--ol-subtle)]"
+              >
+                {copy.next}
+              </button>
+            </div>
+          </div>
+          {tokens.length > 0 ? (
+            <div className="grid gap-2">
+              {tokens.map((token) => {
+                const revoked = Boolean(token.revoked_at);
+                return (
+                  <div
+                    key={token.id}
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[color:var(--ol-line)] bg-white px-3 py-2"
+                  >
+                    <div className="min-w-0">
+                      <div className="truncate text-[12.5px] font-black text-[color:var(--ol-ink)]">
+                        {token.name}
+                      </div>
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <code className="rounded bg-[color:var(--ol-soft)] px-1.5 py-0.5 text-[11px]">
+                          {token.prefix}
+                        </code>
+                        <span className="ol-chip">{agentTokenStatusLabel(token, locale)}</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => void revokeAgentToken(token.id)}
+                      disabled={revoked || revokingTokenId === token.id}
+                      className="ol-mini-btn bg-[#fde7e7] text-[#d93b3b] hover:bg-[#fbd5d5] disabled:cursor-not-allowed disabled:bg-[color:var(--ol-soft)] disabled:text-[color:var(--ol-subtle)]"
+                    >
+                      {revokingTokenId === token.id ? copy.revokingToken : copy.revokeToken}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+        </>
       ) : null}
 
-      <div className="border-t border-[color:var(--ol-line)] pt-4">
-        <strong className="text-[14px] font-black">{copy.approvals}</strong>
-        {pending.length === 0 ? (
-          <p className="mt-2 text-[12.5px] text-[color:var(--ol-muted)]">{copy.noApprovals}</p>
-        ) : (
-          <div className="mt-3 space-y-2">
-            {pending.map((approval) => (
-              <div key={approval.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[color:var(--ol-line)] p-3">
-                <code className="text-[12px]">{approval.action}</code>
-                <div className="flex gap-2">
-                  <button type="button" className="ol-mini-btn" onClick={() => void decide(approval.id, "reject")}>{copy.reject}</button>
-                  <button type="button" className="ol-mini-btn ol-mini-btn-primary" onClick={() => void decide(approval.id, "confirm")}>{copy.confirm}</button>
+      {showApprovals ? (
+        <div className="border-t border-[color:var(--ol-line)] pt-4">
+          <strong className="text-[14px] font-black">{copy.approvals}</strong>
+          {tokenLoading ? (
+            <p className="mt-2 text-[12.5px] text-[color:var(--ol-muted)]">{copy.loading}</p>
+          ) : pending.length === 0 ? (
+            <p className="mt-2 text-[12.5px] text-[color:var(--ol-muted)]">{copy.noApprovals}</p>
+          ) : (
+            <div className="mt-3 space-y-2">
+              {pending.map((approval) => (
+                <div key={approval.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[color:var(--ol-line)] p-3">
+                  <code className="text-[12px]">{approval.action}</code>
+                  <div className="flex gap-2">
+                    <button type="button" className="ol-mini-btn" onClick={() => void decide(approval.id, "reject")}>{copy.reject}</button>
+                    <button type="button" className="ol-mini-btn ol-mini-btn-primary" onClick={() => void decide(approval.id, "confirm")}>{copy.confirm}</button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

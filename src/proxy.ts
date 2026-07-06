@@ -13,7 +13,6 @@
 import { auth } from "@/lib/auth";
 import { NextResponse, type NextRequest } from "next/server";
 
-// 需要登录才能访问的路径前缀（startsWith 匹配）
 const PROTECTED_PREFIXES = [
   "/my",
   "/runs",
@@ -26,18 +25,20 @@ const PROTECTED_PREFIXES = [
   "/admin",
 ];
 
-// 已登录用户不应该再看到的页面
 const AUTH_PAGES = ["/login"];
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  if (pathname === "/hub") {
+    return NextResponse.redirect(hubCompatibilityUrl(req));
+  }
+
   const session = await auth();
   const signedIn = Boolean(session?.jwt && !session.authError);
 
   const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p));
   const isAuthPage = AUTH_PAGES.includes(pathname);
 
-  // 未登录 → 强制跳登录页，并在 query 里带原路径，方便登录后 redirect 回去
   if (isProtected && !signedIn) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
@@ -45,7 +46,6 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // 已登录 → /login 没意义，跳首页
   if (isAuthPage && signedIn) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
@@ -58,7 +58,22 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // 所有路径除了静态资源和 api/auth（NextAuth 自身路由不能拦）
     "/((?!_next/static|_next/image|favicon.ico|api/auth).*)",
   ],
 };
+
+function hubCompatibilityUrl(req: NextRequest) {
+  const tab = req.nextUrl.searchParams.get("tab");
+  const path =
+    tab === "access"
+      ? "/hub/access"
+      : tab === "registry"
+        ? "/connect/bridge"
+        : tab === "skills"
+          ? "/hub/skills"
+          : "/hub/agents";
+  const url = req.nextUrl.clone();
+  url.pathname = path;
+  url.search = "";
+  return url;
+}

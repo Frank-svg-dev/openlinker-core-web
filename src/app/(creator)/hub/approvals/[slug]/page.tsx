@@ -18,7 +18,7 @@ interface Approval {
 export default async function ApprovalPage({ params }: { params: Promise<{ slug: string }> }) {
   const session = await auth();
   const { slug } = await params;
-  if (!session) redirect(`/login?callbackUrl=/hub/approvals/${encodeURIComponent(slug)}`);
+  if (!session?.jwt) redirect(`/login?callbackUrl=/hub/approvals/${encodeURIComponent(slug)}`);
   const locale = await getLocale();
 
   const data = await apiFetchAuthed<{ items: Approval[] }>("/api/v1/creator/approvals");

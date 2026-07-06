@@ -16,7 +16,7 @@ export const metadata = {
   description: "OpenLinker Agent integration docs",
 };
 
-type ConnectTab = "overview" | "mcp" | "delivery" | "status";
+type ConnectTab = "overview" | "mcp" | "bridge" | "delivery" | "status";
 
 const CONNECT_TABS: ReadonlyArray<{
   id: ConnectTab;
@@ -35,6 +35,12 @@ const CONNECT_TABS: ReadonlyArray<{
     label: { zh: "MCP / API 调用", en: "MCP / API Calls" },
     desc: { zh: "令牌、run_agent、get_run", en: "Tokens, run_agent, get_run" },
     href: "/connect?tab=mcp",
+  },
+  {
+    id: "bridge",
+    label: { zh: "跨节点 Bridge", en: "Cross-node Bridge" },
+    desc: { zh: "Registry Node 与 Listing", en: "Registry Nodes and Listings" },
+    href: "/connect/bridge",
   },
   {
     id: "delivery",
@@ -155,12 +161,12 @@ function ConnectResources({ signedIn, locale }: { signedIn: boolean; locale: Loc
   const resources =
     locale === "zh"
       ? [
-          { href: signedIn ? "/hub?tab=access" : "/login?callbackUrl=/hub%3Ftab%3Daccess", title: "Agent 自注册邀请", desc: "登录后为 unattended Agent 生成一次性注册邀请。" },
+          { href: signedIn ? "/hub/access" : "/login?callbackUrl=/hub/access", title: "Agent 自注册邀请", desc: "登录后为 unattended Agent 生成一次性注册邀请。" },
           { href: "/skills", title: "Skill 注册表", desc: "查看 Agent 声明、Benchmark 和运行证据共用的能力标签。" },
           { href: "/status", title: "平台状态", desc: "检查 API、Registry、外部投递和运行链路的状态说明。" },
         ]
       : [
-          { href: signedIn ? "/hub?tab=access" : "/login?callbackUrl=/hub%3Ftab%3Daccess", title: "Agent registration invites", desc: "Create one-time registration invites for unattended Agents after signing in." },
+          { href: signedIn ? "/hub/access" : "/login?callbackUrl=/hub/access", title: "Agent registration invites", desc: "Create one-time registration invites for unattended Agents after signing in." },
           { href: "/skills", title: "Skill registry", desc: "Review capability tags shared by Agent declarations, Benchmarks, and run evidence." },
           { href: "/status", title: "Platform status", desc: "Check API, Registry, webhook delivery, and run path status." },
         ];

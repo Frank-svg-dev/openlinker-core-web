@@ -566,7 +566,7 @@ export function ConnectConsole({ locale = "zh" }: { locale?: Locale }) {
             ))}
           </div>
           <Link
-            href="/hub?tab=access"
+            href="/hub/access"
             className="ol-mini-btn mt-3 inline-flex w-full items-center justify-center gap-1.5 bg-[color:var(--ol-soft)] text-[color:var(--ol-ink)] hover:bg-[color:var(--ol-line)]"
           >
             <Icon name="key" size="sm" />
