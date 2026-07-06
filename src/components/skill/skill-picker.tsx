@@ -3,7 +3,7 @@
 /**
  * SkillPicker：可控的 Skill 多选组件（最多 5 个，子轮 2.3）。
  *
- * 父组件（发布表单 / 创作者中心 dialog）持有 selected ids 的状态；
+ * 父组件（发布表单 / Agent 管理 dialog）持有 selected ids 的状态；
  * 本组件只负责呈现 + onChange，不发起请求。
  *
  * 视觉规则：

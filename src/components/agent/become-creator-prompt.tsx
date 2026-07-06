@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 非创作者用户进入 /publish 时的引导卡。
+ * 非 Agent 所有者用户进入 /publish 时的引导卡。
  *
  * 一键开通（无需审核）：
  *   - POST /api/v1/me/become-creator
@@ -26,25 +26,25 @@ export function BecomeCreatorPrompt({ locale = "zh" }: { locale?: Locale }) {
   const copy =
     locale === "zh"
       ? {
-          success: "已成为创作者，正在刷新进入发布表单...",
+          success: "已开通 Agent 所有者权限，正在刷新进入发布表单...",
           failed: "操作失败，请稍后再试",
-          kicker: "第 0 步 / 开通创作者",
-          title: "成为 OpenLinker 创作者",
+          kicker: "第 0 步 / 开通 Agent 管理",
+          title: "开通 Agent 所有者权限",
           body: "一键开通，无需审核。开通后即可发布 Agent、记录调用，并查看后续权益能力预览。",
           grant: "开通后你将获得",
           grantBody: "当前运行免费；你可以声明展示价格，认证与 Benchmark 用于建立可信度。",
-          submit: "成为创作者",
+          submit: "开通权限",
           submitting: "处理中...",
         }
       : {
-          success: "Creator access enabled. Refreshing the publish form...",
+          success: "Agent owner access enabled. Refreshing the publish form...",
           failed: "Action failed. Try again later.",
-          kicker: "Step 0 / Become creator",
-          title: "Become an OpenLinker creator",
-          body: "Enable creator access in one click. After that, you can publish Agents, record calls, and preview later creator capabilities.",
-          grant: "After enabling creator access",
+          kicker: "Step 0 / Enable Agent Console",
+          title: "Enable Agent owner access",
+          body: "Enable Agent owner access in one click. After that, you can publish Agents, record calls, and preview later owner capabilities.",
+          grant: "After enabling Agent owner access",
           grantBody: "Current runs are free. You can declare display pricing, while certification and benchmarks help build trust.",
-          submit: "Become a creator",
+          submit: "Enable access",
           submitting: "Working...",
         };
 

@@ -31,7 +31,7 @@ type CallPolicy = {
 
 const POLICY_OPTIONS: Array<{ value: CallableBy; label: Record<Locale, string> }> = [
   { value: "public", label: { zh: "公开", en: "Public" } },
-  { value: "same_creator", label: { zh: "同创作者", en: "Same creator" } },
+  { value: "same_creator", label: { zh: "同所有者", en: "Same owner" } },
   { value: "private", label: { zh: "关闭", en: "Closed" } },
 ];
 

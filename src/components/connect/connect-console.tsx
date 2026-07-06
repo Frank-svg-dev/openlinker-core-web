@@ -24,7 +24,7 @@ const MODES: Record<Mode, ModeSpec> = {
     label: "Endpoint",
     title: "HTTPS Endpoint 接入",
     blurb: "声明一个公开 HTTPS endpoint，平台调用时 POST 输入并等返回。",
-    bestFor: "创作者接入 · 最简方案",
+    bestFor: "Agent 所有者接入 · 最简方案",
     icon: "zap",
     accent: "var(--ol-primary)",
     code: [
@@ -153,7 +153,7 @@ const MODES: Record<Mode, ModeSpec> = {
     label: "Webhook",
     title: "接收投递事件",
     blurb: "运行到达终态后，平台向投递目标 POST 签名事件，X-OpenLinker-Signature 带 HMAC-SHA256。",
-    bestFor: "创作者侧异步对账 · 自建管线",
+    bestFor: "Agent 所有者异步对账 · 自建管线",
     icon: "bell",
     accent: "var(--ol-amber)",
     code: [
@@ -165,7 +165,7 @@ const MODES: Record<Mode, ModeSpec> = {
       "  \"output\": { \"summary\": \"...\" }",
       "}",
     ].join("\n"),
-    bullets: ["1m / 5m / 30m 退避重试", "X-OpenLinker-Signature 校验", "通知投递历史在创作者中心可查"],
+    bullets: ["1m / 5m / 30m 退避重试", "X-OpenLinker-Signature 校验", "通知投递历史在 Agent 管理可查"],
   },
 };
 
@@ -186,7 +186,7 @@ const MODE_COPY: Record<Locale, Record<Mode, Pick<ModeSpec, "label" | "title" | 
       label: "Endpoint",
       title: "HTTPS Endpoint 接入",
       blurb: "声明一个公网 HTTPS 调用端点，平台调用时 POST 输入并等待返回。",
-      bestFor: "创作者接入 · 最简方案",
+      bestFor: "Agent 所有者接入 · 最简方案",
       bullets: ["返回 output JSON 即终态", "失败调用保持免费期口径", "可配置预共享 Header 鉴权"],
     },
     runtime_ws: {
@@ -219,8 +219,8 @@ const MODE_COPY: Record<Locale, Record<Mode, Pick<ModeSpec, "label" | "title" | 
       label: "Webhook",
       title: "接收投递事件",
       blurb: "运行到达终态后，平台向投递目标 POST 签名事件，X-OpenLinker-Signature 带 HMAC-SHA256。",
-      bestFor: "创作者侧异步对账 · 自建管线",
-      bullets: ["1m / 5m / 30m 退避重试", "X-OpenLinker-Signature 校验", "通知投递历史在创作者中心可查"],
+      bestFor: "Agent 所有者异步对账 · 自建管线",
+      bullets: ["1m / 5m / 30m 退避重试", "X-OpenLinker-Signature 校验", "通知投递历史在 Agent 管理可查"],
     },
   },
   en: {
@@ -228,7 +228,7 @@ const MODE_COPY: Record<Locale, Record<Mode, Pick<ModeSpec, "label" | "title" | 
       label: "Endpoint",
       title: "HTTPS Endpoint",
       blurb: "Declare a public HTTPS endpoint. OpenLinker POSTs input and waits for the response.",
-      bestFor: "Creator setup · simplest path",
+      bestFor: "Agent owner setup · simplest path",
       bullets: ["Return output JSON as the final state", "Failed runs stay in the free-phase path", "Optional pre-shared header auth"],
     },
     runtime_ws: {
@@ -261,8 +261,8 @@ const MODE_COPY: Record<Locale, Record<Mode, Pick<ModeSpec, "label" | "title" | 
       label: "Webhook",
       title: "Receive delivery events",
       blurb: "When a run reaches a terminal state, OpenLinker POSTs an HMAC-SHA256 signed event to the delivery target.",
-      bestFor: "Async creator reconciliation · custom pipeline",
-      bullets: ["1m / 5m / 30m retry backoff", "Verify X-OpenLinker-Signature", "Notification delivery history is visible in Creator Hub"],
+      bestFor: "Async Agent-owner reconciliation · custom pipeline",
+      bullets: ["1m / 5m / 30m retry backoff", "Verify X-OpenLinker-Signature", "Notification delivery history is visible in Agent Console"],
     },
   },
 };

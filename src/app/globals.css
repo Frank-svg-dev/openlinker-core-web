@@ -1610,7 +1610,7 @@ body > main {
   }
 
   /* ============================================================
-     创作者中心（/hub）原型组件
+     Agent 管理（/hub）原型组件
      来源：prototype/openlinker-flow-15-creator-hub.png + #flow-creator-hub
      ============================================================ */
 
@@ -1653,7 +1653,7 @@ body > main {
     color: #fff;
   }
 
-  /* dash-layout: 主区 + 320 侧栏（创作者中心 2 列布局） */
+  /* dash-layout: 主区 + 320 侧栏（Agent 管理 2 列布局） */
   .ol-dash-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 320px;

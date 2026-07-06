@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 创作者中心：我的 Agent 横排 item-row 列表。
+ * Agent 管理：我的 Agent 横排 item-row 列表。
  *
  * 视觉来自 prototype/openlinker-flow-15-creator-hub.png：
  *   - panel + panel-head（"我的 Agent" + 右"X 个公开 · Y 个待处理"）

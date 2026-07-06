@@ -197,7 +197,7 @@ export function AgentSettingsPanel({ agent, locale }: Props) {
           slugHint: "slug 是 A2A、Agent Card 和外部链接的稳定标识，不能在设置里修改。",
           lifecycle: "生命周期",
           certification: "认证状态",
-          disabledHint: "已下架 Agent 当前不可由作者编辑，需要平台恢复 active 后才能保存。",
+          disabledHint: "已下架 Agent 当前不可由所有者编辑，需要平台恢复 active 后才能保存。",
           certifiedHint: "认证状态由平台评审控制；核心能力变化后应重新测评或复审。",
           save: "保存修改",
           saving: "保存中...",
@@ -212,7 +212,7 @@ export function AgentSettingsPanel({ agent, locale }: Props) {
         }
       : {
           basics: "Basic information",
-          basicsDesc: "Creator-owned fields used for marketplace display, matching, and invocation.",
+          basicsDesc: "Owner-managed fields used for marketplace display, matching, and invocation.",
           name: "Agent name",
           description: "Description",
           tags: "Tags",
@@ -237,7 +237,7 @@ export function AgentSettingsPanel({ agent, locale }: Props) {
           slugHint: "Slug is the stable identifier for A2A, Agent Card, and external links. It is not editable here.",
           lifecycle: "Lifecycle",
           certification: "Certification",
-          disabledHint: "Disabled Agents cannot be edited by the creator until the platform restores them to active.",
+          disabledHint: "Disabled Agents cannot be edited by the owner until the platform restores them to active.",
           certifiedHint: "Certification is platform-controlled; major capability changes should be re-tested or reviewed.",
           save: "Save changes",
           saving: "Saving...",

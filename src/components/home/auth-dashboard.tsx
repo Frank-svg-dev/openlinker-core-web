@@ -2,8 +2,8 @@
  * <AuthDashboard /> —— 已登录用户首页概览。
  *
  * PNG 没画"已登录态"，但保留原 page.tsx 的业务逻辑：
- *   - 4 张 stat 卡（本月调用 / core 运行 / 工作台状态 / 创作者状态）
- *   - 跳转入口（工作台 / Registry / 创作者中心 / 开发者中心）
+ *   - 4 张 stat 卡（本月调用 / core 运行 / 工作台状态 / Agent 权益）
+ *   - 跳转入口（工作台 / Registry / Agent 管理 / 开发者中心）
  *
  * 视觉风格统一为原型 hero-card 风格的小卡：
  *   - stat 卡：白底 + 边框 + ol-shadow
@@ -55,17 +55,17 @@ export function AuthDashboard({ userName, dashboard, locale = "zh" }: AuthDashbo
           planStatus: "工作台",
           notEnabled: "已拆分",
           noWallet: "不包含钱包和支付入口",
-          settlement: "创作者侧",
+          settlement: "Agent 权益",
           called: "被调",
           noShare: "core 调用记录",
           noAgent: "还未发布 Agent",
           cards: [
-            { href: "/my", icon: "chart" as IconName, title: "我的工作台", desc: "查看运行、创作者和账户入口。" },
+            { href: "/my", icon: "chart" as IconName, title: "我的工作台", desc: "查看运行、Agent 管理和账户入口。" },
             { href: "/registry", icon: "target" as IconName, title: "Registry", desc: "浏览公开 Agent、Skill 和调用入口。" },
             {
               href: isCreator ? "/hub" : "/publish",
               icon: (isCreator ? "bot" : "edit") as IconName,
-              title: isCreator ? "创作者中心 / 我的 Agent" : "成为创作者",
+              title: isCreator ? "Agent 管理 / 我的 Agent" : "开通 Agent 管理",
               desc: isCreator ? "管理已发布 Agent、注册邀请、Skill 和调用记录。" : "发布 Agent，注册后出现在我的 Agent。",
             },
             { href: "/connect", icon: "key" as IconName, title: "开发者中心", desc: "查看 API/MCP、鉴权边界和外部工具调用方式。" },
@@ -83,17 +83,17 @@ export function AuthDashboard({ userName, dashboard, locale = "zh" }: AuthDashbo
           planStatus: "Workspace",
           notEnabled: "Split",
           noWallet: "Wallet and payments are not included",
-          settlement: "Creator side",
+          settlement: "Agent access",
           called: "Called",
           noShare: "core run records",
           noAgent: "No Agent published",
           cards: [
-            { href: "/my", icon: "chart" as IconName, title: "My Workspace", desc: "Review runs, creator tools, and account entry points." },
+            { href: "/my", icon: "chart" as IconName, title: "My Workspace", desc: "Review runs, Agent Console, and account entry points." },
             { href: "/registry", icon: "target" as IconName, title: "Registry", desc: "Browse public Agents, Skills, and run entry points." },
             {
               href: isCreator ? "/hub" : "/publish",
               icon: (isCreator ? "bot" : "edit") as IconName,
-              title: isCreator ? "Creator Hub / My Agents" : "Become a creator",
+              title: isCreator ? "Agent Console / My Agents" : "Enable Agent Console",
               desc: isCreator ? "Manage published Agents, registration invites, Skills, and runs." : "Publish an Agent and it will appear under My Agents.",
             },
             { href: "/connect", icon: "key" as IconName, title: "Developer Center", desc: "Review API/MCP docs, auth boundaries, and external tool calls." },

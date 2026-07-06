@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 创作者发布 Agent 表单（按 prototype/openlinker-flow-17-publish.png 视觉精修）。
+ * Agent 所有者发布 Agent 表单（按 prototype/openlinker-flow-17-publish.png 视觉精修）。
  *
  * 布局：ol-publish-layout 2 列
  *   左主区：
@@ -223,12 +223,12 @@ export function PublishForm({ creatorName, skills, locale = "zh" }: PublishFormP
       ? {
           slugTaken: "此 slug 已被使用",
           skillBindWarningPrefix: "Agent 已提交，但技能绑定失败：",
-          skillBindWarning: "Agent 已提交，但技能绑定失败，请到创作者中心重试。",
+          skillBindWarning: "Agent 已提交，但技能绑定失败，请到 Agent 管理重试。",
           saved: "基础信息已保存，继续补充能力声明",
           chooseSource: "选择接入方式",
           basicInfo: "基础信息",
           skillLabel: `技能（最多 ${MAX_SKILLS_PER_AGENT} 个，可选）`,
-          skillHint: "声明 Agent 具备的能力，便于买方按 Skill 检索；公开后可在创作者中心调整。",
+          skillHint: "声明 Agent 具备的能力，便于买方按 Skill 检索；公开后可在 Agent 管理调整。",
           previewTitle: "Listing 实时预览",
           previewSync: "右侧同步",
           visibilityTitle: "公开与认证",
@@ -241,12 +241,12 @@ export function PublishForm({ creatorName, skills, locale = "zh" }: PublishFormP
       : {
           slugTaken: "This slug is already taken",
           skillBindWarningPrefix: "Agent submitted, but Skill binding failed: ",
-          skillBindWarning: "Agent submitted, but Skill binding failed. Retry from Creator Hub.",
+          skillBindWarning: "Agent submitted, but Skill binding failed. Retry from Agent Console.",
           saved: "Basics saved. Continue with capability claims.",
           chooseSource: "Choose connection mode",
           basicInfo: "Basics",
           skillLabel: `Skills (up to ${MAX_SKILLS_PER_AGENT}, optional)`,
-          skillHint: "Declare what the Agent can do so buyers can find it by Skill. You can adjust this later in Creator Hub.",
+          skillHint: "Declare what the Agent can do so buyers can find it by Skill. You can adjust this later in Agent Console.",
           previewTitle: "Live listing preview",
           previewSync: "Synced from the form",
           visibilityTitle: "Visibility and certification",
@@ -333,7 +333,7 @@ export function PublishForm({ creatorName, skills, locale = "zh" }: PublishFormP
         body,
       });
       // 创建成功后，若选了 skill 再 PATCH 绑定。失败仅 toast 警告，不阻塞流程
-      // ——agent 已创建，作者可在创作者中心二次编辑。
+      // Agent 已创建，所有者可在 Agent 管理中二次编辑。
       if (selectedSkillIds.length > 0 && created?.id) {
         try {
           await apiFetch(
@@ -600,14 +600,14 @@ function EndpointSection({
           runtimeWSTitle: "Agent Node / WebSocket：内网 Agent 默认选择",
           runtimeWSBody: (
             <>
-              保存后在创作者中心生成绑定该 Agent 的接入凭证。你的 Agent Node 不需要公网入站地址，只要用该凭证建立{" "}
+              保存后在 Agent 管理生成绑定该 Agent 的接入凭证。你的 Agent Node 不需要公网入站地址，只要用该凭证建立{" "}
               <code>/api/v1/agent-runtime/ws</code> 出站长连接，就能实时接收运行请求、回传事件和最终结果；WebSocket 无法保活时可用 Runtime Pull 降级。
             </>
           ),
           runtimePullTitle: "Runtime Pull：仅作为 WebSocket 降级",
           runtimeBody: (
             <>
-              保存后在创作者中心生成绑定该 Agent 的接入凭证。你的本地 Agent 不需要公网入站地址，只要定时请求{" "}
+              保存后在 Agent 管理生成绑定该 Agent 的接入凭证。你的本地 Agent 不需要公网入站地址，只要定时请求{" "}
               <code>/api/v1/agent-runtime/heartbeat</code> 读取是否有待领取运行请求，并用{" "}
               <code>/api/v1/agent-runtime/runs/claim?wait=25</code> 长轮询领取运行请求，再 POST{" "}
               <code>/api/v1/agent-runtime/runs/&lt;id&gt;/result</code> 回传结果。
@@ -630,14 +630,14 @@ function EndpointSection({
           runtimeWSTitle: "Agent Node / WebSocket: default for private Agents",
           runtimeWSBody: (
             <>
-              After saving, Creator Hub generates an access credential bound to this Agent. Agent Node does not need a public inbound URL. It opens an outbound{" "}
+              After saving, Agent Console generates an access credential bound to this Agent. Agent Node does not need a public inbound URL. It opens an outbound{" "}
               <code>/api/v1/agent-runtime/ws</code> connection with that credential to receive run requests in real time, stream events, and send final results. Use Runtime Pull only when WebSocket cannot stay connected.
             </>
           ),
           runtimePullTitle: "Runtime Pull: WebSocket fallback only",
           runtimeBody: (
             <>
-              After saving, Creator Hub generates an access credential bound to this Agent. Your local Agent does not need a public inbound URL. It periodically calls{" "}
+              After saving, Agent Console generates an access credential bound to this Agent. Your local Agent does not need a public inbound URL. It periodically calls{" "}
               <code>/api/v1/agent-runtime/heartbeat</code> to check for pending run requests, long-polls{" "}
               <code>/api/v1/agent-runtime/runs/claim?wait=25</code> to claim a run, then POSTs the result to{" "}
               <code>/api/v1/agent-runtime/runs/&lt;id&gt;/result</code>.
@@ -788,13 +788,13 @@ function VisibilitySection({
           label: "可见性",
           public: "公开 - 立即出现在 Registry",
           unlisted: "非公开列表 - 仅凭链接访问",
-          private: "私有 - 仅创作者可见",
+          private: "私有 - 仅 Agent 所有者可见",
         }
       : {
           label: "Visibility",
           public: "Public - listed in Registry immediately",
           unlisted: "Unlisted - accessible only by link",
-          private: "Private - creator only",
+          private: "Private - Agent owner only",
         };
   return (
     <Field label={copy.label} error={errors.visibility?.message}>
@@ -894,14 +894,14 @@ function handlePublishError(
       ? {
           slugTaken: "此 slug 已被使用",
           slugTakenToast: "此 slug 已被使用，请换一个",
-          forbidden: "你不是创作者，请先开通",
+          forbidden: "你还没有 Agent 所有者权限，请先开通",
           validation: "字段格式错误",
           submitFailed: "提交失败，请稍后重试",
         }
       : {
           slugTaken: "This slug is already taken",
           slugTakenToast: "This slug is already taken. Choose another one.",
-          forbidden: "Your account is not a creator yet.",
+          forbidden: "Your account does not have Agent owner access yet.",
           validation: "Some fields are invalid",
           submitFailed: "Submit failed. Try again later.",
         };

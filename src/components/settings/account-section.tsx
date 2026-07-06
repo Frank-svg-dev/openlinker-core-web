@@ -87,7 +87,7 @@ export function AccountSection({ email, displayName, locale = "zh" }: Props) {
       ? {
           edit: "编辑",
           title: "账户资料",
-          body: "这些信息用于登录、通知和创作者展示。",
+          body: "这些信息用于登录、通知和 Agent 所有者展示。",
           profile: "个人资料",
           tooShort: "显示名称至少 2 个字符",
           saved: "账户资料已保存",
@@ -107,7 +107,7 @@ export function AccountSection({ email, displayName, locale = "zh" }: Props) {
       : {
           edit: "Edit",
           title: "Account Profile",
-          body: "These details are used for sign-in, notifications, and creator display.",
+          body: "These details are used for sign-in, notifications, and Agent-owner display.",
           profile: "Profile",
           tooShort: "Display name must be at least 2 characters",
           saved: "Account profile saved",

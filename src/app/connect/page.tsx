@@ -13,10 +13,10 @@ import { getLocale } from "@/lib/i18n-server";
 
 export const metadata = {
   title: "Developer Center",
-  description: "OpenLinker API, MCP, A2A, Bridge, and delivery docs",
+  description: "OpenLinker API, MCP, A2A, and delivery docs",
 };
 
-type ConnectTab = "overview" | "mcp" | "bridge" | "delivery" | "status";
+type ConnectTab = "overview" | "mcp" | "delivery";
 
 const CONNECT_TABS: ReadonlyArray<{
   id: ConnectTab;
@@ -37,27 +37,15 @@ const CONNECT_TABS: ReadonlyArray<{
     href: "/connect?tab=mcp",
   },
   {
-    id: "bridge",
-    label: { zh: "跨节点 Bridge", en: "Cross-node Bridge" },
-    desc: { zh: "Registry Node 与 Listing", en: "Registry Nodes and Listings" },
-    href: "/connect/bridge",
-  },
-  {
     id: "delivery",
     label: { zh: "结果投递", en: "Delivery" },
     desc: { zh: "投递目标与运行交付", en: "Delivery targets and run handoff" },
     href: "/connect?tab=delivery",
   },
-  {
-    id: "status",
-    label: { zh: "状态与资源", en: "Status & Resources" },
-    desc: { zh: "平台状态、Skill、接入令牌", en: "Platform status, Skills, tokens" },
-    href: "/connect?tab=status",
-  },
 ];
 
 function normalizeConnectTab(value?: string): ConnectTab {
-  if (value === "mcp" || value === "delivery" || value === "status") {
+  if (value === "mcp" || value === "delivery") {
     return value;
   }
   return "overview";
@@ -78,7 +66,7 @@ export default async function ConnectPage({
           home: "首页",
           current: "开发者中心",
           heading: "面向调用方的 API、MCP 与 A2A 集成文档",
-          lead: "这里说明如何调用 OpenLinker、接入 MCP/API 客户端、配置投递目标和跨节点 Bridge。发布自己的 Agent 请走创作者中心的“发布 Agent”流程。",
+          lead: "这里说明如何调用 OpenLinker、接入 MCP/API 客户端、配置投递目标和理解 A2A 调用链。发布或桥接自己的 Agent 请走“Agent 管理”。",
           loginTitle: "登录后配置投递目标",
           loginDesc: "Webhook 和 Slack 投递目标属于账号配置。你可以先阅读接入方式，登录后再添加、删除或设为默认目标。",
         }
@@ -86,7 +74,7 @@ export default async function ConnectPage({
           home: "Home",
           current: "Developer Center",
           heading: "API, MCP, and A2A integration docs for callers",
-          lead: "Use this area to call OpenLinker, connect MCP/API clients, configure delivery targets, and manage cross-node Bridge. To publish your own Agent, use the Creator Hub publishing flow.",
+          lead: "Use this area to call OpenLinker, connect MCP/API clients, configure delivery targets, and understand A2A call chains. To publish or bridge your own Agent, use Agent Console.",
           loginTitle: "Sign in to configure delivery targets",
           loginDesc: "Webhook and Slack delivery targets are account settings. You can read the docs first, then sign in to add, delete, or set a default target.",
         };
@@ -133,6 +121,7 @@ export default async function ConnectPage({
           {activeTab === "overview" ? (
             <>
               <ProtocolDiagram locale={locale} />
+              <ConnectResources signedIn={signedIn} locale={locale} />
             </>
           ) : null}
           {activeTab === "mcp" ? <ConnectConsole locale={locale} /> : null}
@@ -150,7 +139,6 @@ export default async function ConnectPage({
               )}
             </div>
           ) : null}
-          {activeTab === "status" ? <ConnectResources signedIn={signedIn} locale={locale} /> : null}
         </div>
       </main>
     </>
@@ -161,12 +149,12 @@ function ConnectResources({ signedIn, locale }: { signedIn: boolean; locale: Loc
   const resources =
     locale === "zh"
       ? [
-          { href: signedIn ? "/publish" : "/login?callbackUrl=/publish", title: "发布 Agent", desc: "注册或发布你自己的 Agent；unattended 自注册邀请也从发布流程进入。" },
+          { href: signedIn ? "/hub" : "/login?callbackUrl=/hub", title: "Agent 管理", desc: "发布、桥接和维护你拥有的 Agent。" },
           { href: "/skills", title: "Skill 注册表", desc: "查看 Agent 声明、Benchmark 和运行证据共用的能力标签。" },
           { href: "/status", title: "平台状态", desc: "检查 API、Registry、外部投递和运行链路的状态说明。" },
         ]
       : [
-          { href: signedIn ? "/publish" : "/login?callbackUrl=/publish", title: "Publish Agent", desc: "Register or publish your own Agent; unattended registration invites also start from the publishing flow." },
+          { href: signedIn ? "/hub" : "/login?callbackUrl=/hub", title: "Agent Console", desc: "Publish, bridge, and maintain the Agents you own." },
           { href: "/skills", title: "Skill registry", desc: "Review capability tags shared by Agent declarations, Benchmarks, and run evidence." },
           { href: "/status", title: "Platform status", desc: "Check API, Registry, webhook delivery, and run path status." },
         ];

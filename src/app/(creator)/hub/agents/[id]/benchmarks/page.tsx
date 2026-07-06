@@ -44,14 +44,14 @@ export default async function AgentBenchmarksPage({
   const copy =
     locale === "zh"
       ? {
-          hub: "创作者中心",
+          hub: "Agent 管理",
           kicker: "能力测评",
           title: "能力测评",
           lead: "平台对每个 Skill 跑一组测试用例 + LLM 评分。平均分 ≥ 75 → verified；如果运行能力未就绪，这里只展示历史结果。",
           back: "返回接入",
         }
       : {
-          hub: "Creator Hub",
+          hub: "Agent Console",
           kicker: "Capability benchmark",
           title: "Capability Benchmark",
           lead: "The platform runs test cases and LLM judging for each Skill. Average score >= 75 becomes verified. If runtime capability is not ready, only historical results are shown.",

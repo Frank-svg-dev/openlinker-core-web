@@ -78,7 +78,7 @@ export default async function PlaygroundPage({
           heading: "Playground 让调用过程透明",
           lead: "输入任务描述或 JSON input，保留多轮上下文，并实时查看 Agent 调用了哪些工具、耗时多久、最终结果是什么；当前运行免费。",
           unavailableTitle: "Playground 暂不可用",
-          unavailableLead: "该 Agent 当前不在线或缺少可调用证据。请等待 Agent 恢复，或在创作者中心运行健康检查。",
+          unavailableLead: "该 Agent 当前不在线或缺少可调用证据。请等待 Agent 恢复，或在 Agent 管理运行健康检查。",
           back: "返回",
         }
       : {
@@ -89,7 +89,7 @@ export default async function PlaygroundPage({
           heading: "Playground makes each run transparent",
           lead: "Enter a task or JSON input, keep multi-turn context, watch what the Agent does, see timing, and inspect the final result. Runs are free in the current phase.",
           unavailableTitle: "Playground unavailable",
-          unavailableLead: "This Agent is offline or does not have callable evidence yet. Wait for it to recover, or run a health check from Creator Hub.",
+          unavailableLead: "This Agent is offline or does not have callable evidence yet. Wait for it to recover, or run a health check from Agent Console.",
           back: "Back",
         };
 

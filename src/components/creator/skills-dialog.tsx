@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 创作者中心：每个 Agent 的技能 dialog（子轮 2.3）。
+ * Agent 管理：每个 Agent 的技能 dialog（子轮 2.3）。
  *
  * 后端契约：
  *   GET /api/v1/agents/:slug                          → 含 skills?: Skill[]（公开详情）

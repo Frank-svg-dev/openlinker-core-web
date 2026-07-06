@@ -32,10 +32,12 @@ export function UserMenu({ userName, userEmail, isAdmin, locale }: UserMenuProps
           menu: "用户菜单",
           overview: "我的主页",
           overviewDesc: "个人入口总览",
-          creator: "创作者中心",
-          creatorDesc: "管理 Agent、发布与调试",
+          creator: "Agent 管理",
+          creatorDesc: "管理 Agent、发布与 Bridge",
           inbox: "通知",
           inboxDesc: "告警与运行消息",
+          status: "平台状态",
+          statusDesc: "服务健康与事件记录",
           settings: "设置",
           settingsDesc: "账号、安全与令牌",
           admin: "管理台",
@@ -46,10 +48,12 @@ export function UserMenu({ userName, userEmail, isAdmin, locale }: UserMenuProps
           menu: "User menu",
           overview: "My home",
           overviewDesc: "Personal overview",
-          creator: "Creator Hub",
-          creatorDesc: "Manage agents, publishing, debugging",
+          creator: "Agent Console",
+          creatorDesc: "Manage agents, publishing, Bridge",
           inbox: "Inbox",
           inboxDesc: "Alerts and run messages",
+          status: "Platform Status",
+          statusDesc: "Service health and incidents",
           settings: "Settings",
           settingsDesc: "Account, security, tokens",
           admin: "Admin",
@@ -63,6 +67,7 @@ export function UserMenu({ userName, userEmail, isAdmin, locale }: UserMenuProps
   ];
   const secondaryItems: MenuItem[] = [
     { href: "/inbox", icon: "bell", label: copy.inbox, desc: copy.inboxDesc },
+    { href: "/status", icon: "info", label: copy.status, desc: copy.statusDesc },
     { href: "/settings", icon: "gear", label: copy.settings, desc: copy.settingsDesc },
     ...(isAdmin
       ? [{ href: "/admin", icon: "shield" as const, label: copy.admin, desc: copy.adminDesc }]

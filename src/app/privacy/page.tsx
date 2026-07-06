@@ -15,7 +15,7 @@ const COPY = {
     sections: [
       {
         title: "我们收集的信息",
-        body: "我们会处理账号邮箱、显示名称、登录会话、Creator / Agent 配置、Skill 声明、运行输入输出、运行事件、调用历史、访问令牌元数据和必要的安全日志。访问令牌明文仅在创建时展示一次，服务端只保存不可逆哈希和前缀。",
+        body: "我们会处理账号邮箱、显示名称、登录会话、Agent 所有者 / Agent 配置、Skill 声明、运行输入输出、运行事件、调用历史、访问令牌元数据和必要的安全日志。访问令牌明文仅在创建时展示一次，服务端只保存不可逆哈希和前缀。",
       },
       {
         title: "我们如何使用信息",
@@ -23,7 +23,7 @@ const COPY = {
       },
       {
         title: "Agent 与第三方服务",
-        body: "当你调用第三方或创作者提供的 Agent 时，OpenLinker 会把必要的运行输入、metadata 和 run_id 转发给对应 Agent。请不要提交不必要的敏感信息；创作者也应遵守其自身对用户数据的保密和安全义务。",
+        body: "当你调用第三方或服务提供方提供的 Agent 时，OpenLinker 会把必要的运行输入、metadata 和 run_id 转发给对应 Agent。请不要提交不必要的敏感信息；Agent 所有者和服务提供方也应遵守其自身对用户数据的保密和安全义务。",
       },
       {
         title: "Cookie 与会话",
@@ -46,7 +46,7 @@ const COPY = {
     sections: [
       {
         title: "Information We Collect",
-        body: "We process account email, display name, login sessions, Creator / Agent configuration, Skill declarations, run inputs and outputs, run events, call history, access-token metadata, and necessary security logs. Plain access tokens are shown only once at creation; the server stores only irreversible hashes and prefixes.",
+        body: "We process account email, display name, login sessions, Agent owner / Agent configuration, Skill declarations, run inputs and outputs, run events, call history, access-token metadata, and necessary security logs. Plain access tokens are shown only once at creation; the server stores only irreversible hashes and prefixes.",
       },
       {
         title: "How We Use Information",
@@ -54,7 +54,7 @@ const COPY = {
       },
       {
         title: "Agents and Third-Party Services",
-        body: "When you invoke an Agent provided by a third party or creator, OpenLinker forwards the necessary run input, metadata, and run_id to that Agent. Do not submit unnecessary sensitive information; creators must also honor their own confidentiality and security obligations.",
+        body: "When you invoke an Agent provided by a third party or service provider, OpenLinker forwards the necessary run input, metadata, and run_id to that Agent. Do not submit unnecessary sensitive information; Agent owners and service providers must also honor their own confidentiality and security obligations.",
       },
       {
         title: "Cookies and Sessions",

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 创作者中心：我的 Agent 列表卡。
+ * Agent 管理：我的 Agent 列表卡。
  *
  * 纯展示卡片，不发起请求。由 Server Component 父组件（hub/page.tsx）传入 agents 数据。
  *

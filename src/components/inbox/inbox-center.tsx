@@ -68,7 +68,7 @@ export function InboxCenter({
           today: "今日概览",
           shortcuts: "快捷入口",
           usage: "运行历史",
-          hub: "创作者中心",
+          hub: "Agent 管理",
           notifications: "通知能力",
         }
       : {
@@ -83,7 +83,7 @@ export function InboxCenter({
           today: "Today",
           shortcuts: "Shortcuts",
           usage: "Run history",
-          hub: "Creator Hub",
+          hub: "Agent Console",
           notifications: "Notification capabilities",
         };
 

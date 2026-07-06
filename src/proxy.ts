@@ -68,7 +68,7 @@ function hubCompatibilityUrl(req: NextRequest) {
     tab === "access"
       ? "/hub/access"
       : tab === "registry"
-        ? "/connect/bridge"
+        ? "/hub/bridge"
         : tab === "skills"
           ? "/hub/skills"
           : "/hub/agents";

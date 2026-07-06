@@ -66,7 +66,7 @@ export default async function RunsPage({
           emptyText: "还没有运行记录。",
           emptyAction: "打开 Registry ->",
           connect: "发布 Agent",
-          connectBody: "如果你是创作者，可以发布 HTTP Endpoint、Agent Node WebSocket 或 Pull 降级 Agent。",
+          connectBody: "如果你是 Agent 所有者，可以发布 HTTP Endpoint、Agent Node WebSocket 或 Pull 降级 Agent。",
           connectAction: "发布新 Agent",
         }
       : {
@@ -85,7 +85,7 @@ export default async function RunsPage({
           emptyText: "No run records yet.",
           emptyAction: "Open Registry ->",
           connect: "Publish Agent",
-          connectBody: "Creators can publish HTTP Endpoint, Agent Node WebSocket, or Pull fallback Agents.",
+          connectBody: "Agent owners can publish HTTP Endpoint, Agent Node WebSocket, or Pull fallback Agents.",
           connectAction: "Publish new Agent",
         };
 

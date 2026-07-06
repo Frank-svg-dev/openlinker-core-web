@@ -38,20 +38,20 @@ export default async function AgentSettingsPage({
   const copy =
     locale === "zh"
       ? {
-          hub: "创作者中心",
+          hub: "Agent 管理",
           current: "设置",
-          kicker: "Agent 设置 / 作者可编辑",
+          kicker: "Agent 设置 / 所有者可编辑",
           title: "Agent 设置",
-          lead: "编辑作者可维护的基础信息、连接方式和可见性。平台审核、认证、健康度和统计只在这里展示。",
-          back: "返回创作者中心",
+          lead: "编辑所有者可维护的基础信息、连接方式和可见性。平台审核、认证、健康度和统计只在这里展示。",
+          back: "返回 Agent 管理",
         }
       : {
-          hub: "Creator Hub",
+          hub: "Agent Console",
           current: "Settings",
-          kicker: "Agent settings / Creator editable",
+          kicker: "Agent settings / Owner editable",
           title: "Agent settings",
-          lead: "Edit creator-owned basic information, connection, and visibility. Platform review, certification, health, and metrics are read-only here.",
-          back: "Back to Creator Hub",
+          lead: "Edit owner-managed basic information, connection, and visibility. Platform review, certification, health, and metrics are read-only here.",
+          back: "Back to Agent Console",
         };
 
   const { id: slugParam } = await params;

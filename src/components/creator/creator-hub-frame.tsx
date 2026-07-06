@@ -6,7 +6,7 @@ import { Topbar } from "@/components/layout/topbar";
 import { MyWorkspaceSwitcher } from "@/components/my/workspace-switcher";
 import type { Locale } from "@/lib/i18n";
 
-export type CreatorHubSection = "agents" | "access" | "tokens" | "approvals" | "skills";
+export type CreatorHubSection = "agents" | "access" | "tokens" | "bridge" | "approvals" | "skills";
 
 const NAV_ITEMS: ReadonlyArray<{
   id: CreatorHubSection;
@@ -31,6 +31,12 @@ const NAV_ITEMS: ReadonlyArray<{
     label: { zh: "Agent 接入凭证", en: "Agent Credentials" },
     desc: { zh: "查看、排序、撤销", en: "Review, sort, revoke" },
     href: "/hub/tokens",
+  },
+  {
+    id: "bridge",
+    label: { zh: "跨节点 Bridge", en: "Cross-node Bridge" },
+    desc: { zh: "同步到 Registry Node", en: "Sync to Registry Nodes" },
+    href: "/hub/bridge",
   },
   {
     id: "approvals",
@@ -63,22 +69,22 @@ export function CreatorHubFrame({
     locale === "zh"
       ? {
           mine: "我的",
-          creator: "创作者中心",
-          kicker: coreCopy ? "Core 供给" : "创作者工作台 · 我发布的能力",
-          heading: coreCopy ? "创作者中心 · Agent、接入凭证与 Skill" : "创作者中心 · Agent、接入凭证、审批与 Skill",
+          creator: "Agent 管理",
+          kicker: coreCopy ? "Core 供给" : "Agent 所有者工作台 · 我管理的能力",
+          heading: coreCopy ? "Agent 管理 · Agent、接入凭证与 Skill" : "Agent 管理 · Agent、接入凭证、Bridge、审批与 Skill",
           lead: coreCopy
-            ? "管理开源 core 需要的 Agent 供给能力：发布、认证、运行记录、注册邀请、审批和 Skill 声明。"
-            : "管理 Agent 可见性与认证、注册邀请、审批和 Skill 声明。跨节点 Bridge 已移到开发者中心。",
+            ? "管理开源 core 需要的 Agent 供给能力：发布、认证、运行记录、注册邀请、跨节点 Bridge 和 Skill 声明。"
+            : "管理你拥有的 Agent：发布状态、可见性、接入凭证、跨节点 Bridge、审批和 Skill 声明。",
           publish: "+ 发布 Agent",
         }
       : {
           mine: "My",
-          creator: "Creator Hub",
-          kicker: coreCopy ? "core supply" : "Creator workspace · What I publish",
-          heading: coreCopy ? "Creator Hub · Agents, Credentials, and Skills" : "Creator Hub · Agents, Credentials, Approvals, and Skills",
+          creator: "Agent Console",
+          kicker: coreCopy ? "core supply" : "Agent owner workspace · What I manage",
+          heading: coreCopy ? "Agent Console · Agents, Credentials, and Skills" : "Agent Console · Agents, Credentials, Bridge, Approvals, and Skills",
           lead: coreCopy
-            ? "Manage the Agent supply capabilities required by open-source core: publishing, verification, runs, registration invites, approvals, and Skill claims."
-            : "Manage Agent visibility, verification, registration invites, approvals, and Skill claims. Cross-node Bridge now lives in Developer Center.",
+            ? "Manage the Agent supply capabilities required by open-source core: publishing, verification, runs, registration invites, cross-node Bridge, and Skill claims."
+            : "Manage the Agents you own: publishing state, visibility, credentials, cross-node Bridge, approvals, and Skill claims.",
           publish: "+ Publish Agent",
         };
 
@@ -108,8 +114,8 @@ export function CreatorHubFrame({
 
         <MyWorkspaceSwitcher locale={locale} className="mt-6" />
         <PageTabs
-          ariaLabel={locale === "zh" ? "创作者中心功能分页" : "Creator Hub sections"}
-          className="mt-6 xl:grid-cols-5"
+          ariaLabel={locale === "zh" ? "Agent 管理功能分页" : "Agent Console sections"}
+          className="mt-6 xl:grid-cols-6"
           items={NAV_ITEMS.map((item) => ({
             label: item.label[locale],
             desc: item.desc[locale],
@@ -142,31 +148,33 @@ export function CreatorHubGuide({
           title: coreCopy ? "Core 前端边界" : "功能边界",
           body: coreCopy
             ? "core-web 只维护开源 core 可以独立运行的供给、发布与运行能力。"
-            : "创作者中心负责作者自己的 Agent 供给、注册邀请和审批；跨节点 Bridge 属于开发者中心。不同页面只加载自己的数据。",
+            : "Agent 管理负责所有者自己的 Agent 供给、接入凭证、跨节点 Bridge 和审批。不同页面只加载自己的数据。",
           guide: {
             agents: "Agent 列表会加载统计和筛选数据，适合处理大量供给项。",
             access: "注册邀请页只创建一次性 Agent 接入凭证，不再预加载凭证列表或审批列表。",
             tokens: "Agent 接入凭证页只读取凭证列表，支持分页、排序和撤销。",
+            bridge: "跨节点 Bridge 页只读取 Registry Node 与 Listing，用于把可公开同步的 Agent 供给到其他节点。",
             approvals: "审批页只读取待处理高风险动作，空列表也会快速返回。",
             skills: "Skill 声明页才加载 Agent 详情和能力标签。",
           } satisfies Record<CreatorHubSection, string>,
           bridge: "跨节点 Bridge",
-          bridgeHref: "/connect/bridge",
+          bridgeHref: "/hub/bridge",
         }
       : {
           title: coreCopy ? "Core frontend boundary" : "Section boundary",
           body: coreCopy
             ? "core-web only maintains supply, publishing, and run capabilities that open-source core can operate independently."
-            : "Creator Hub owns the creator's Agents, registration invites, and approvals. Cross-node Bridge belongs in Developer Center. Each page loads only its own data.",
+            : "Agent Console owns the Agent owner's supply, credentials, cross-node Bridge, and approvals. Each page loads only its own data.",
           guide: {
             agents: "The Agent list loads stats and filters for larger supply sets.",
             access: "The registration invite page only creates one-time Agent access credentials; it does not preload credential or approval lists.",
             tokens: "Agent Credentials only reads the credential list, with pagination, sorting, and revoke actions.",
+            bridge: "Cross-node Bridge only reads Registry Nodes and Listings to supply bridgeable Agents to other nodes.",
             approvals: "Approvals only reads pending high-risk actions, so an empty list returns quickly.",
             skills: "Skill claims is the only page that loads Agent details and capability tags.",
           } satisfies Record<CreatorHubSection, string>,
           bridge: "Cross-node Bridge",
-          bridgeHref: "/connect/bridge",
+          bridgeHref: "/hub/bridge",
         };
 
   return (

@@ -55,20 +55,20 @@ export default async function AgentOnboardingPage({
   const copy =
     locale === "zh"
       ? {
-          hub: "创作者中心",
+          hub: "Agent 管理",
           current: "接入",
           kicker: "Agent 接入 / 能力声明",
           title: "接入配置",
           lead: "维护能力声明、示例输入输出和 dry-run 状态，让平台可以更准确地匹配与调用。",
-          back: "返回创作者中心",
+          back: "返回 Agent 管理",
         }
       : {
-          hub: "Creator Hub",
+          hub: "Agent Console",
           current: "Onboarding",
           kicker: "Agent onboarding / capability declaration",
           title: "Onboarding settings",
           lead: "Maintain capability declarations, example inputs and outputs, and dry-run status so the platform can match and invoke the Agent more accurately.",
-          back: "Back to Creator Hub",
+          back: "Back to Agent Console",
         };
 
   const { id: slugParam } = await params;

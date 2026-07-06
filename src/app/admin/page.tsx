@@ -66,8 +66,8 @@ export default async function AdminOverviewPage({
       title: copy.users,
       body:
         locale === "zh"
-          ? "分页搜索用户，调整管理员、创作者和认证创作者权限。"
-          : "Search users by page and adjust admin, creator, and verification flags.",
+          ? "分页搜索用户，调整管理员、Agent 所有者和认证 Agent 所有者权限。"
+          : "Search users by page and adjust admin, Agent owner, and verification flags.",
       metric: formatNumber(summary?.total_users ?? 0),
     },
     {

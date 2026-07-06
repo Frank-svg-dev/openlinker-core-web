@@ -32,8 +32,8 @@ const ITEMS: ReadonlyArray<WorkspaceItem> = [
       p.startsWith("/runs") || p.startsWith("/run"),
   },
   {
-    label: { zh: "创作者", en: "Creator" },
-    desc: { zh: "我的 Agent", en: "My Agents" },
+    label: { zh: "Agent 管理", en: "Agent Console" },
+    desc: { zh: "所有者工具", en: "Owner tools" },
     href: "/hub",
     icon: "bot",
     match: (p) => p.startsWith("/hub"),

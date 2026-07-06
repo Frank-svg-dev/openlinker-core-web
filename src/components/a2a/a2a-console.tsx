@@ -97,7 +97,7 @@ export function A2AConsole({
           relationships: "运行关系",
           chooseFirst: "先从父调用链目录选择一条记录。",
           related: "关联页面",
-          creatorHub: ["创作者中心", "查看自注册 Agent、能力声明和调用记录。"],
+          creatorHub: ["Agent 管理", "查看自注册 Agent、能力声明和调用记录。"],
           skills: ["Skill 注册表", "查看能力标签、声明 Skill 和推荐依据。"],
           connect: ["开发者中心", "查看 API/MCP、鉴权边界和外部工具调用说明。"],
         }
@@ -125,7 +125,7 @@ export function A2AConsole({
           relationships: "Run relationships",
           chooseFirst: "Select a call chain from the Parent directory first.",
           related: "Related pages",
-          creatorHub: ["Creator Hub", "View self-registered Agents, Skill claims, and run history."],
+          creatorHub: ["Agent Console", "View self-registered Agents, Skill claims, and run history."],
           skills: ["Skill Registry", "Review capability tags, Skill claims, and matching signals."],
           connect: ["Developer Center", "Read API/MCP, auth boundaries, and external tool guidance."],
         };
@@ -612,7 +612,7 @@ function A2AFlowCard({ locale }: { locale: Locale }) {
           steps: [
             {
               title: "Agent 自注册",
-              desc: "创作者在 /hub 发起自注册；Agent 读取 /skill/publish-agent 后带 endpoint、tags、skill_ids 注册自己，平台用 Agent 接入凭证承载注册和运行用途。",
+              desc: "Agent 所有者在 /hub 发起自注册；Agent 读取 /skill/publish-agent 后带 endpoint、tags、skill_ids 注册自己，平台用 Agent 接入凭证承载注册和运行用途。",
             },
             {
               title: "Skill / MCP 关联",
@@ -629,7 +629,7 @@ function A2AFlowCard({ locale }: { locale: Locale }) {
           steps: [
             {
               title: "Agent self-registration",
-              desc: "The creator starts self-registration from /hub. The Agent reads /skill/publish-agent and registers itself with endpoint, tags, and skill_ids. OpenLinker uses Agent access credentials for registration and runtime.",
+              desc: "The Agent owner starts self-registration from /hub. The Agent reads /skill/publish-agent and registers itself with endpoint, tags, and skill_ids. OpenLinker uses Agent access credentials for registration and runtime.",
             },
             {
               title: "Skill / MCP linkage",

@@ -15,15 +15,15 @@ const COPY = {
     sections: [
       {
         title: "服务内容",
-        body: "OpenLinker Core 提供 Agent 发布、发现、MCP 工具入口、运行记录、A2A 协作链路和创作者管理能力。当前阶段优先提供免费调用闭环；商业化能力以商业产品规则和正式公告为准。",
+        body: "OpenLinker Core 提供 Agent 发布、发现、MCP 工具入口、运行记录、A2A 协作链路和 Agent 管理能力。当前阶段优先提供免费调用闭环；商业化能力以商业产品规则和正式公告为准。",
       },
       {
         title: "账号与访问令牌",
         body: "你需要妥善保管账号、会话、访问令牌和 Agent 自注册邀请。任何通过你的凭证发起的操作会被视为你授权的操作；如发现泄露，应立即撤销相关令牌并通知我们。",
       },
       {
-        title: "创作者与 Agent 责任",
-        body: "创作者应确保 Agent 描述、Skill 声明、端点行为和输出能力真实、合法且不误导用户。Agent 不得未经授权收集敏感信息、绕过平台安全限制、攻击第三方系统或输出违法内容。",
+        title: "Agent 所有者与服务提供方责任",
+        body: "Agent 所有者和服务提供方应确保 Agent 描述、Skill 声明、端点行为和输出能力真实、合法且不误导用户。Agent 不得未经授权收集敏感信息、绕过平台安全限制、攻击第三方系统或输出违法内容。",
       },
       {
         title: "运行输入与内容",
@@ -46,15 +46,15 @@ const COPY = {
     sections: [
       {
         title: "Service Scope",
-        body: "OpenLinker Core provides Agent publishing, discovery, MCP tool entry, run records, A2A collaboration traces, and creator management. The current phase prioritizes a free invocation loop; commercial capabilities follow commercial product rules and official announcements.",
+        body: "OpenLinker Core provides Agent publishing, discovery, MCP tool entry, run records, A2A collaboration traces, and Agent management. The current phase prioritizes a free invocation loop; commercial capabilities follow commercial product rules and official announcements.",
       },
       {
         title: "Accounts and Access Tokens",
         body: "You are responsible for protecting your account, sessions, access tokens, and Agent self-registration invitations. Actions made with your credentials are treated as authorized by you. If credentials are exposed, revoke related tokens and notify us immediately.",
       },
       {
-        title: "Creator and Agent Responsibilities",
-        body: "Creators must keep Agent descriptions, Skill declarations, endpoint behavior, and output capability truthful, lawful, and not misleading. Agents must not collect sensitive information without authorization, bypass platform security controls, attack third-party systems, or produce unlawful content.",
+        title: "Agent Owner and Service Provider Responsibilities",
+        body: "Agent owners and service providers must keep Agent descriptions, Skill declarations, endpoint behavior, and output capability truthful, lawful, and not misleading. Agents must not collect sensitive information without authorization, bypass platform security controls, attack third-party systems, or produce unlawful content.",
       },
       {
         title: "Run Inputs and Content",

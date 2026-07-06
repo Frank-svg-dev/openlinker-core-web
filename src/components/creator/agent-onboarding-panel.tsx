@@ -326,7 +326,7 @@ export function AgentOnboardingPanel({
           visibilityOptions: {
             public: "公开 - 出现在市场",
             unlisted: "链接可见 - 不列入市场",
-            private: "私有 - 仅创作者管理",
+            private: "私有 - 仅 Agent 所有者管理",
           },
           certification: "认证状态",
           submitting: "提交中...",
@@ -391,7 +391,7 @@ export function AgentOnboardingPanel({
           visibilityOptions: {
             public: "Public - listed in market",
             unlisted: "Unlisted - link visible",
-            private: "Private - creator only",
+            private: "Private - Agent owner only",
           },
           certification: "Verification status",
           submitting: "Submitting...",

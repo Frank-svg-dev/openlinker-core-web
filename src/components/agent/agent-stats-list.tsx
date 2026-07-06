@@ -1,5 +1,5 @@
 /**
- * 创作者中心：含本月统计的 Agent 列表（增强版 my-agents-card）。
+ * Agent 管理：含本月统计的 Agent 列表（增强版 my-agents-card）。
  *
  * 与 my-agents-card 的区别：
  *   - 表格形式（5 列）展示，比卡片紧凑，方便对比多 Agent 调用

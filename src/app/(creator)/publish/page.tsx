@@ -1,5 +1,5 @@
 /**
- * 创作者发布 Agent 页（Server Component）。
+ * Agent 所有者发布 Agent 页（Server Component）。
  *
  * 视觉来自 prototype/openlinker-flow-17-publish.png：
  *   - <Topbar /> 顶部导航

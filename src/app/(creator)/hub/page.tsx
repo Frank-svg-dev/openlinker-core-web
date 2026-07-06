@@ -8,7 +8,7 @@ export default async function CreatorHubRedirect({
   const { tab } = await searchParams;
 
   if (tab === "access") redirect("/hub/access");
-  if (tab === "registry") redirect("/connect/bridge");
+  if (tab === "registry") redirect("/hub/bridge");
   if (tab === "skills") redirect("/hub/skills");
 
   redirect("/hub/agents");

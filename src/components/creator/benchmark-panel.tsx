@@ -3,7 +3,7 @@
 /**
  * BenchmarkPanel
  *
- * 创作者侧：列出 Agent 已声明的 Skill，按钮触发 benchmark，轮询结果。
+ * Agent 所有者侧：列出 Agent 已声明的 Skill，按钮触发 benchmark，轮询结果。
  *
  * 依赖后端 (Module B)：
  *   POST /api/v1/creator/agents/:id/benchmarks       触发

@@ -15,11 +15,11 @@ const COPY = {
   zh: {
     kicker: "OpenLinker 生态",
     heading: "把可用 Agent\n接到你的业务系统里",
-    body: "登录后可以试用 Agent、查看运行历史，也可以开通创作者身份发布自己的 Agent。",
+    body: "登录后可以试用 Agent、查看运行历史，也可以开通 Agent 所有者权限发布自己的 Agent。",
     features: [
       "当前运行免费，后续权益能力逐步开放",
       "内网账号邮箱密码登录",
-      "创作者发布 HTTPS Endpoint",
+      "Agent 所有者发布 HTTPS Endpoint",
       "运行结果、展示价格和耗时可追踪",
     ],
     stats: [
@@ -32,11 +32,11 @@ const COPY = {
   en: {
     kicker: "OpenLinker ecosystem",
     heading: "Connect callable Agents\nto business systems",
-    body: "After signing in, you can try Agents, inspect run history, or become a creator and publish your own Agent.",
+    body: "After signing in, you can try Agents, inspect run history, or enable Agent owner access and publish your own Agent.",
     features: [
       "Current runs are free; later access capabilities will open gradually",
       "Intranet account email/password sign-in",
-      "Creators publish HTTPS endpoints",
+      "Agent owners publish HTTPS endpoints",
       "Run results, display price, and duration are traceable",
     ],
     stats: [
