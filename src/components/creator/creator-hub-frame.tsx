@@ -22,8 +22,8 @@ const NAV_ITEMS: ReadonlyArray<{
   },
   {
     id: "access",
-    label: { zh: "生成 Token", en: "Create Token" },
-    desc: { zh: "Agent 自注册邀请", en: "Agent registration invite" },
+    label: { zh: "注册邀请", en: "Registration Invites" },
+    desc: { zh: "无人值守 Agent", en: "Unattended Agents" },
     href: "/hub/access",
   },
   {
@@ -67,9 +67,9 @@ export function CreatorHubFrame({
           kicker: coreCopy ? "Core 供给" : "创作者工作台 · 我发布的能力",
           heading: coreCopy ? "创作者中心 · Agent、Token 与 Skill" : "创作者中心 · Agent、Token、审批与 Skill",
           lead: coreCopy
-            ? "管理开源 core 需要的 Agent 供给能力：接入、认证、运行记录、Agent Token、审批和 Skill 声明。"
-            : "管理 Agent 可见性与认证、Agent Token、审批和 Skill 声明。跨节点 Bridge 已移到接入中心。",
-          publish: "+ 接入新 Agent",
+            ? "管理开源 core 需要的 Agent 供给能力：发布、认证、运行记录、注册邀请、审批和 Skill 声明。"
+            : "管理 Agent 可见性与认证、注册邀请、审批和 Skill 声明。跨节点 Bridge 已移到开发者中心。",
+          publish: "+ 发布 Agent",
         }
       : {
           mine: "My",
@@ -77,9 +77,9 @@ export function CreatorHubFrame({
           kicker: coreCopy ? "core supply" : "Creator workspace · What I publish",
           heading: coreCopy ? "Creator Hub · Agents, Tokens, and Skills" : "Creator Hub · Agents, Tokens, Approvals, and Skills",
           lead: coreCopy
-            ? "Manage the Agent supply capabilities required by open-source core: onboarding, verification, runs, Agent Tokens, approvals, and Skill claims."
-            : "Manage Agent visibility, verification, Agent Tokens, approvals, and Skill claims. Cross-node Bridge now lives in Connect.",
-          publish: "+ Connect Agent",
+            ? "Manage the Agent supply capabilities required by open-source core: publishing, verification, runs, registration invites, approvals, and Skill claims."
+            : "Manage Agent visibility, verification, registration invites, approvals, and Skill claims. Cross-node Bridge now lives in Developer Center.",
+          publish: "+ Publish Agent",
         };
 
   return (
@@ -141,11 +141,11 @@ export function CreatorHubGuide({
       ? {
           title: coreCopy ? "Core 前端边界" : "功能边界",
           body: coreCopy
-            ? "core-web 只维护开源 core 可以独立运行的供给、接入与运行能力。"
-            : "创作者中心负责作者自己的 Agent 供给、Token 和审批；跨节点 Bridge 属于接入中心。不同页面只加载自己的数据。",
+            ? "core-web 只维护开源 core 可以独立运行的供给、发布与运行能力。"
+            : "创作者中心负责作者自己的 Agent 供给、注册邀请和审批；跨节点 Bridge 属于开发者中心。不同页面只加载自己的数据。",
           guide: {
             agents: "Agent 列表会加载统计和筛选数据，适合处理大量供给项。",
-            access: "生成页只创建一次性 Agent Token，不再预加载 token 列表或审批列表。",
+            access: "注册邀请页只创建一次性 Agent 注册邀请，不再预加载 token 列表或审批列表。",
             tokens: "Token 管理页只读取 Agent Token 列表，支持分页、排序和撤销。",
             approvals: "审批页只读取待处理高风险动作，空列表也会快速返回。",
             skills: "Skill 声明页才加载 Agent 详情和能力标签。",
@@ -156,11 +156,11 @@ export function CreatorHubGuide({
       : {
           title: coreCopy ? "Core frontend boundary" : "Section boundary",
           body: coreCopy
-            ? "core-web only maintains supply, connection, and run capabilities that open-source core can operate independently."
-            : "Creator Hub owns the creator's Agents, Tokens, and approvals. Cross-node Bridge belongs in Connect. Each page loads only its own data.",
+            ? "core-web only maintains supply, publishing, and run capabilities that open-source core can operate independently."
+            : "Creator Hub owns the creator's Agents, registration invites, and approvals. Cross-node Bridge belongs in Developer Center. Each page loads only its own data.",
           guide: {
             agents: "The Agent list loads stats and filters for larger supply sets.",
-            access: "The create page only mints one-time Agent Tokens; it does not preload token or approval lists.",
+            access: "The registration invite page only mints one-time Agent invites; it does not preload token or approval lists.",
             tokens: "Token management only reads Agent Tokens, with pagination, sorting, and revoke actions.",
             approvals: "Approvals only reads pending high-risk actions, so an empty list returns quickly.",
             skills: "Skill claims is the only page that loads Agent details and capability tags.",

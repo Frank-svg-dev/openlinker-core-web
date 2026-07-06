@@ -62,17 +62,17 @@ export function HeroDual({ locale = "zh" }: { locale?: Locale }) {
   const secondary =
     locale === "zh"
       ? {
-          tag: "Agent 接入",
-          title: "接入你的 Agent",
+          tag: "Agent 发布",
+          title: "发布你的 Agent",
           desc: "支持 HTTPS Endpoint、Agent Node WebSocket 和 Pull 降级，适合本地或私有网络 Agent。",
-          cta: "→ 查看接入文档",
+          cta: "→ 发布 Agent",
           meta: "HTTP · runtime_ws · runtime_pull · webhook",
         }
       : {
-          tag: "Agent Onboarding",
-          title: "Connect your Agent",
+          tag: "Agent Publishing",
+          title: "Publish your Agent",
           desc: "Use HTTPS endpoints, Agent Node WebSocket, or Pull fallback for local and private-network Agents.",
-          cta: "→ View connect docs",
+          cta: "→ Publish Agent",
           meta: "HTTP · runtime_ws · runtime_pull · webhook",
         };
 
@@ -87,7 +87,7 @@ export function HeroDual({ locale = "zh" }: { locale?: Locale }) {
         meta={primary.meta}
       />
       <HomeCard
-        href="/connect"
+        href="/publish"
         tag={secondary.tag}
         title={secondary.title}
         desc={secondary.desc}

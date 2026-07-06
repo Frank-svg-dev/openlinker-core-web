@@ -48,7 +48,7 @@ export function SidePromo({ locale = "zh" }: { locale?: Locale }) {
             className="ol-mini-btn mt-3"
             style={{ background: "#fff", color: "var(--ol-primary-dark)" }}
           >
-            {locale === "zh" ? "接入 Agent" : "Connect Agent"}
+            {locale === "zh" ? "发布 Agent" : "Publish Agent"}
           </Link>
         </div>
 

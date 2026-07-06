@@ -118,7 +118,7 @@ export function SkillsRegistry({ locale, skills }: { locale: Locale; skills: Ski
           paths: [
             ["Registry 按 Skill 搜索", "/registry"],
             ["管理 Agent Skill 声明", "/hub/skills"],
-            ["接入 Agent 声明 Skill", "/publish"],
+            ["发布 Agent 声明 Skill", "/publish"],
             ["MCP/API 接入说明", "/connect"],
           ],
         }

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 创作者接入 Agent 表单（按 prototype/openlinker-flow-17-publish.png 视觉精修）。
+ * 创作者发布 Agent 表单（按 prototype/openlinker-flow-17-publish.png 视觉精修）。
  *
  * 布局：ol-publish-layout 2 列
  *   左主区：

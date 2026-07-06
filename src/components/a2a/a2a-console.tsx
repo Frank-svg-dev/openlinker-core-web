@@ -99,7 +99,7 @@ export function A2AConsole({
           related: "关联页面",
           creatorHub: ["创作者中心", "查看自注册 Agent、能力声明和调用记录。"],
           skills: ["Skill 注册表", "查看能力标签、声明 Skill 和推荐依据。"],
-          connect: ["接入中心", "查看 MCP/API、鉴权边界和外部工具调用说明。"],
+          connect: ["开发者中心", "查看 API/MCP、鉴权边界和外部工具调用说明。"],
         }
       : {
           title: "Agent Call Chain Details",
@@ -127,7 +127,7 @@ export function A2AConsole({
           related: "Related pages",
           creatorHub: ["Creator Hub", "View self-registered Agents, Skill claims, and run history."],
           skills: ["Skill Registry", "Review capability tags, Skill claims, and matching signals."],
-          connect: ["Connect Center", "Read MCP/API, auth boundaries, and external tool guidance."],
+          connect: ["Developer Center", "Read API/MCP, auth boundaries, and external tool guidance."],
         };
   const selectedRunId = initialData?.parent_run_id ?? initialRunId;
   const children = initialData?.items ?? [];

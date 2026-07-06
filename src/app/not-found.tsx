@@ -12,18 +12,18 @@ export default async function NotFound() {
           current: "未找到",
           kicker: "not found",
           heading: "这个页面暂时不可用",
-          lead: "链接可能已过期，或当前数据源没有返回对应资源。你可以回到 Registry 或接入中心继续操作。",
+          lead: "链接可能已过期，或当前数据源没有返回对应资源。你可以回到 Registry 或开发者中心继续操作。",
           registry: "打开 Registry",
-          connect: "查看接入文档",
+          connect: "查看开发者文档",
         }
       : {
           home: "Home",
           current: "Not found",
           kicker: "not found",
           heading: "This page is not available",
-          lead: "The link may have expired, or the current data source did not return this resource. You can continue from Registry or Connect.",
+          lead: "The link may have expired, or the current data source did not return this resource. You can continue from Registry or Developer Center.",
           registry: "Open Registry",
-          connect: "View Connect docs",
+          connect: "View developer docs",
         };
 
   return (

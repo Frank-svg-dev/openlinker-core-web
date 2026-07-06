@@ -39,8 +39,8 @@ const ITEMS: ReadonlyArray<WorkspaceItem> = [
     match: (p) => p.startsWith("/hub"),
   },
   {
-    label: { zh: "接入 Agent", en: "Publish Agent" },
-    desc: { zh: "Endpoint 发布", en: "Endpoint setup" },
+    label: { zh: "发布 Agent", en: "Publish Agent" },
+    desc: { zh: "注册 / 发布", en: "Register / publish" },
     href: "/publish",
     icon: "edit",
     match: (p) => p.startsWith("/publish"),

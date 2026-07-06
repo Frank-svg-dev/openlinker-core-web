@@ -50,7 +50,7 @@ export function AgentStatsList({
     locale === "zh"
       ? {
           title: "我的 Agent · 调用概览",
-          add: "+ 接入新 Agent",
+          add: "+ 发布新 Agent",
           price: "展示价格",
           monthCalls: "本月调用",
           accessStatus: "权益状态",
@@ -60,7 +60,7 @@ export function AgentStatsList({
         }
       : {
           title: "My Agents · Call overview",
-          add: "+ Connect new Agent",
+          add: "+ Publish new Agent",
           price: "Display price",
           monthCalls: "Calls this month",
           accessStatus: "Access status",

@@ -65,9 +65,9 @@ export default async function RunsPage({
           runTitle: "最近运行",
           emptyText: "还没有运行记录。",
           emptyAction: "打开 Registry ->",
-          connect: "接入 Agent",
-          connectBody: "如果你是创作者，可以接入 HTTP Endpoint、Agent Node WebSocket 或 Pull 降级 Agent。",
-          connectAction: "接入新 Agent",
+          connect: "发布 Agent",
+          connectBody: "如果你是创作者，可以发布 HTTP Endpoint、Agent Node WebSocket 或 Pull 降级 Agent。",
+          connectAction: "发布新 Agent",
         }
       : {
           my: "My",
@@ -84,9 +84,9 @@ export default async function RunsPage({
           runTitle: "Recent Runs",
           emptyText: "No run records yet.",
           emptyAction: "Open Registry ->",
-          connect: "Connect Agent",
-          connectBody: "Creators can connect HTTP Endpoint, Agent Node WebSocket, or Pull fallback Agents.",
-          connectAction: "Connect new Agent",
+          connect: "Publish Agent",
+          connectBody: "Creators can publish HTTP Endpoint, Agent Node WebSocket, or Pull fallback Agents.",
+          connectAction: "Publish new Agent",
         };
 
   const [dashboard, runs] = await Promise.all([

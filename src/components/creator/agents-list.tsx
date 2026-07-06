@@ -149,9 +149,9 @@ export function AgentsList({ locale, agentPage, controls }: Props) {
     locale === "zh"
       ? {
           title: "我的 Agent",
-          noneYet: "还没接入",
-          empty: "还没有接入 Agent。",
-          publish: "立即接入 →",
+          noneYet: "还没发布",
+          empty: "还没有发布 Agent。",
+          publish: "立即发布 →",
           searchLabel: "搜索 Agent",
           searchPlaceholder: "搜索名称、slug、标签、端点或状态",
           filterStatus: "状态",

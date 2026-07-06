@@ -51,7 +51,7 @@ export function ApiSnippet({
                 href="/connect"
                 className="font-bold text-[color:var(--ol-primary-dark)] underline-offset-2 hover:underline"
               >
-                接入中心
+                开发者中心
               </Link>{" "}
               查看创建说明，异步调用返回 run_id 后可用 SSE 追踪进度。
             </>
@@ -68,7 +68,7 @@ export function ApiSnippet({
                 href="/connect"
                 className="font-bold text-[color:var(--ol-primary-dark)] underline-offset-2 hover:underline"
               >
-                Connect Center
+                Developer Center
               </Link>{" "}
               for setup instructions. After the async call returns a run_id, use SSE to track progress.
             </>

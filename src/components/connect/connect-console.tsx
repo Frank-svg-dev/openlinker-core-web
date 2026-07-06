@@ -324,7 +324,7 @@ export function ConnectConsole({ locale = "zh" }: { locale?: Locale }) {
           rateValue: "按服务端配置",
           createToken: "创建 Agent 自注册邀请",
           status: "平台状态",
-          statusBody: "服务状态由公开探针实时检测；接入文档不预设健康结论。",
+          statusBody: "服务状态由公开探针实时检测；开发者文档不预设健康结论。",
           viewStatus: "查看全部状态",
           languages: "支持的语言",
           sdkDocs: "查看 SDK 文档",

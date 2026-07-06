@@ -82,14 +82,14 @@ export default async function ConnectBridgePage() {
   const copy =
     locale === "zh"
       ? {
-          kicker: "接入 / Bridge",
+          kicker: "开发者中心 / Bridge",
           heading: "跨节点 Bridge",
-          lead: "Bridge 是接入中心能力：创建 Registry Node，再显式把可公开同步的 Agent 链接为 Registry Listing。",
+          lead: "Bridge 是开发者中心能力：创建 Registry Node，再显式把可公开同步的 Agent 链接为 Registry Listing。",
         }
       : {
-          kicker: "connect / bridge",
+          kicker: "developer / bridge",
           heading: "Cross-node Bridge",
-          lead: "Bridge belongs in Connect: create a Registry Node, then explicitly link bridgeable Agents as Registry Listings.",
+          lead: "Bridge belongs in Developer Center: create a Registry Node, then explicitly link bridgeable Agents as Registry Listings.",
         };
 
   const [agents, registryNodes, registryListings] = await Promise.all([
@@ -117,7 +117,7 @@ export default async function ConnectBridgePage() {
         </div>
 
         <PageTabs
-          ariaLabel={locale === "zh" ? "接入中心分页" : "Connect sections"}
+          ariaLabel={locale === "zh" ? "开发者中心分页" : "Developer Center sections"}
           className="mt-6 xl:grid-cols-5"
           items={CONNECT_TABS.map((tab) => ({
             label: tab.label[locale],

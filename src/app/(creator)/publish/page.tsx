@@ -1,5 +1,5 @@
 /**
- * 创作者接入 Agent 页（Server Component）。
+ * 创作者发布 Agent 页（Server Component）。
  *
  * 视觉来自 prototype/openlinker-flow-17-publish.png：
  *   - <Topbar /> 顶部导航
@@ -13,9 +13,10 @@
  *      is_creator=false → <BecomeCreatorPrompt /> 引导一键开通
  *   4. 后端不可用 → 显示降级提示，不抛错让 RSC tree 崩溃
  *
- * Agent 支持 HTTP Endpoint、Agent Node WebSocket、Runtime Pull fallback，以及已有 MCP Tool 包装；能力声明 / dry-run / 认证状态作为后续步骤展示。
+ * Agent 支持 HTTP Endpoint、Agent Node WebSocket、Runtime Pull fallback，以及已有 MCP Tool 包装；无人值守 Agent 可从这里进入自注册邀请。能力声明 / dry-run / 认证状态作为后续步骤展示。
  */
 
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { BecomeCreatorPrompt } from "@/components/agent/become-creator-prompt";
@@ -73,12 +74,64 @@ export default async function PublishPage() {
             {copy.loadFailed}
           </div>
         ) : me?.is_creator ? (
-          <PublishForm creatorName={me.display_name || me.email} skills={skills} locale={locale} />
+          <>
+            <SelfRegistrationEntry locale={locale} />
+            <div id="manual-publish-form" className="scroll-mt-28">
+              <PublishForm creatorName={me.display_name || me.email} skills={skills} locale={locale} />
+            </div>
+          </>
         ) : (
           <BecomeCreatorPrompt locale={locale} />
         )}
       </main>
     </>
+  );
+}
+
+function SelfRegistrationEntry({ locale }: { locale: Locale }) {
+  const copy =
+    locale === "zh"
+      ? {
+          kicker: "发布方式",
+          title: "无人值守 Agent 可先生成注册邀请",
+          body: "如果你正在手动发布一个公网 Endpoint 或 MCP 工具，继续填写下方表单。若是本地脚本、CLI、内网服务或 Agent Node 需要自己完成首次注册，请生成一次性注册邀请，再把启动包交给 Agent。",
+          primary: "生成 Agent 注册邀请",
+          secondary: "继续手动发布",
+        }
+      : {
+          kicker: "Publishing mode",
+          title: "Unattended Agents can start with a registration invite",
+          body: "Keep using the form below when you are manually publishing a public endpoint or MCP tool. For a local script, CLI, private service, or Agent Node that needs to register itself, create a one-time invite and pass the startup packet to the Agent.",
+          primary: "Create Agent registration invite",
+          secondary: "Continue manual publishing",
+        };
+
+  return (
+    <section className="ol-panel ol-panel-pad mt-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="max-w-3xl">
+          <div className="ol-kicker">{copy.kicker}</div>
+          <h2 className="mt-1 text-[20px] font-black text-[color:var(--ol-ink)]">{copy.title}</h2>
+          <p className="mt-2 text-[13.5px] leading-relaxed text-[color:var(--ol-muted)]">
+            {copy.body}
+          </p>
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <Link
+            href="/hub/access"
+            className="inline-flex h-10 items-center justify-center rounded-[13px] bg-[color:var(--ol-primary)] px-4 text-[13px] font-black text-white hover:bg-[color:var(--ol-primary-dark)]"
+          >
+            {copy.primary}
+          </Link>
+          <a
+            href="#manual-publish-form"
+            className="inline-flex h-10 items-center justify-center rounded-[13px] border border-[color:var(--ol-line)] bg-white px-4 text-[13px] font-black text-[color:var(--ol-ink)] hover:border-[color:var(--ol-primary)]/40"
+          >
+            {copy.secondary}
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -91,9 +144,9 @@ function PublishHead({ activePill, locale }: { activePill: string | null; locale
   const copy =
     locale === "zh"
       ? {
-          kicker: "我的 / 接入 Agent",
-          heading: "选择接入方式并发布你的 Agent",
-          lead: "公网 HTTPS 可直连；本地、内网或 NAT Agent 默认用 Agent Node WebSocket；Runtime Pull 只作降级。已有 MCP 工具可包装成高级 Agent 来源，不是 MCP Server 上架入口。",
+          kicker: "我的 / 发布 Agent",
+          heading: "发布你的 Agent",
+          lead: "手动发布可配置公网 HTTPS、Agent Node WebSocket、Runtime Pull 或 MCP 工具包装；无人值守 Agent 可先生成注册邀请，让 Agent 自己完成注册。",
           later: "后续步骤",
           progressAria: "发布进度",
           pills: [
@@ -104,9 +157,9 @@ function PublishHead({ activePill, locale }: { activePill: string | null; locale
           ],
         }
       : {
-          kicker: "My / Connect Agent",
-          heading: "Choose a connection mode and publish your Agent",
-          lead: "Use a public HTTPS endpoint when reachable. For local, private-network, or NAT Agents, use Agent Node WebSocket by default; Runtime Pull is only the fallback. Existing MCP tools can be wrapped as advanced Agent sources; MCP Servers are not listed here.",
+          kicker: "My / Publish Agent",
+          heading: "Publish your Agent",
+          lead: "Publish manually with HTTPS, Agent Node WebSocket, Runtime Pull, or an MCP tool wrapper. For unattended Agents, create a registration invite first so the Agent can register itself.",
           later: "Later step",
           progressAria: "Publishing progress",
           pills: [

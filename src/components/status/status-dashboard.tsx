@@ -137,7 +137,7 @@ export function StatusDashboard({ locale = "zh" }: { locale?: Locale }) {
           operationalBody: "健康检查、数据库、Registry API 和 discovery manifest 均可由浏览器访问验证。",
           degradedBody: "若异常持续，请先查看 /healthz、/healthz/db、Caddy 日志和 core-api / core-web 容器健康状态。",
           related: "相关页面",
-          connect: "接入文档",
+          connect: "开发者文档",
           inbox: "通知中心",
           usage: "运行历史",
         }
@@ -163,7 +163,7 @@ export function StatusDashboard({ locale = "zh" }: { locale?: Locale }) {
           operationalBody: "Health checks, database, Registry API, and discovery manifest are browser-verifiable.",
           degradedBody: "If the issue continues, check /healthz, /healthz/db, Caddy logs, and core-api / core-web container health.",
           related: "Related pages",
-          connect: "Connect docs",
+          connect: "Developer docs",
           inbox: "Inbox",
           usage: "Run history",
         };
