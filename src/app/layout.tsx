@@ -25,8 +25,8 @@ export default async function RootLayout({
   const locale = await getLocale();
   const copy =
     locale === "zh"
-      ? { terms: "服务条款", privacy: "隐私政策" }
-      : { terms: "Terms", privacy: "Privacy" };
+      ? { terms: "服务条款", privacy: "隐私政策", status: "平台状态" }
+      : { terms: "Terms", privacy: "Privacy", status: "Platform Status" };
 
   return (
     <html
@@ -47,6 +47,10 @@ export default async function RootLayout({
           <span className="mx-2 text-slate-300">/</span>
           <a className="inline-flex min-h-8 items-center hover:text-slate-900" href="/privacy">
             {copy.privacy}
+          </a>
+          <span className="mx-2 text-slate-300">/</span>
+          <a className="inline-flex min-h-8 items-center hover:text-slate-900" href="/status">
+            {copy.status}
           </a>
         </footer>
         <Toaster richColors position="top-center" />
