@@ -12,9 +12,6 @@ function isLoopbackHostname(hostname: string): boolean {
 export function inferApiBaseFromWebOrigin(origin: string): string {
   try {
     const url = new URL(origin);
-    if (url.hostname === "openlinker.ai" || url.hostname.endsWith(".openlinker.ai")) {
-      return "https://api.openlinker.ai";
-    }
     if (!isLoopbackHostname(url.hostname)) {
       return stripTrailingSlash(url.origin);
     }
