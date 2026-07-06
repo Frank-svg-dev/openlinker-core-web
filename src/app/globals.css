@@ -309,6 +309,31 @@ body > main {
     cursor: progress !important;
   }
 
+  .ol-language-toggle {
+    position: relative;
+  }
+
+  .ol-language-toggle::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--ol-primary);
+    box-shadow: 0 0 10px color-mix(in oklab, var(--ol-primary) 70%, transparent);
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .ol-language-toggle[data-pending="true"]::after {
+    opacity: 1;
+    transform: scale(1);
+    animation: ol-loading-pulse 0.85s ease-in-out infinite;
+  }
+
   .ol-topbar {
     min-height: 84px;
   }
@@ -344,6 +369,31 @@ body > main {
   .ol-topbar-actions {
     flex: 0 0 auto;
     justify-content: flex-end;
+  }
+
+  @media (min-width: 768px) {
+    .ol-topbar-inner {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+      column-gap: clamp(12px, 2vw, 24px);
+    }
+
+    .ol-topbar-brand-slot {
+      justify-self: start;
+      width: 100%;
+    }
+
+    .ol-topbar-nav-slot {
+      display: flex !important;
+      justify-self: center;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .ol-topbar-actions {
+      justify-self: end;
+      width: 100%;
+    }
   }
 
   .ol-user-menu {
