@@ -17,11 +17,12 @@ import type { Locale } from "@/lib/i18n";
 
 interface Props {
   currentTags: string[];
+  currentSkillIds?: string[];
   currentQ: string;
   locale?: Locale;
 }
 
-export function MarketHeader({ currentTags, currentQ, locale = "zh" }: Props) {
+export function MarketHeader({ currentTags, currentSkillIds = [], currentQ, locale = "zh" }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [q, setQ] = useState(currentQ);
@@ -46,6 +47,7 @@ export function MarketHeader({ currentTags, currentQ, locale = "zh" }: Props) {
   const submitSearch = () => {
     const sp = new URLSearchParams();
     if (currentTags.length) sp.set("tags", currentTags.join(","));
+    if (currentSkillIds.length) sp.set("skill_ids", currentSkillIds.join(","));
     const submittedQ = inputRef.current?.value ?? q;
     const trimmed = submittedQ.trim();
     if (trimmed) sp.set("q", trimmed);

@@ -33,6 +33,7 @@ interface MarketItem {
   description: string;
   price_per_call_cents: number;
   tags: string[];
+  skills?: SkillMini[];
   total_calls: number;
   creator: { display_name: string };
   availability?: {
@@ -55,22 +56,31 @@ interface MarketResponse {
   size: number;
 }
 
+interface SkillMini {
+  id: string;
+  category: string;
+  name: string;
+  description: string;
+}
+
 const PAGE_SIZE = 12;
 
 export default async function MarketPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tags?: string; q?: string; page?: string }>;
+  searchParams: Promise<{ tags?: string; q?: string; page?: string; skill?: string; skill_ids?: string }>;
 }) {
   const sp = await searchParams;
   const locale = await getLocale();
   const tags = sp.tags?.split(",").filter(Boolean) ?? [];
+  const skillIDs = parseSkillIDs(sp.skill, sp.skill_ids);
   const q = sp.q ?? "";
   const rawPage = Number(sp.page ?? "1");
   const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
 
   const params = new URLSearchParams();
   if (tags.length) params.set("tags", tags.join(","));
+  if (skillIDs.length) params.set("skill_ids", skillIDs.join(","));
   if (q) params.set("q", q);
   params.set("callable_only", "true");
   params.set("page", String(page));
@@ -93,6 +103,7 @@ export default async function MarketPage({
           result: "推荐结果",
           count: "个",
           callableOnly: "仅展示可调用 · 健康状态优先",
+          skillMatch: "Skill 命中",
           failed: "暂时无法连接 Registry 数据，请检查后端服务或稍后刷新。",
           empty: "当前没有匹配的可调用 Agent。可以换一个关键词，或去 Agent 管理接入一个 Agent Node / WebSocket Agent。",
         }
@@ -100,6 +111,7 @@ export default async function MarketPage({
           result: "Results",
           count: "Agents",
           callableOnly: "Callable only · healthy status first",
+          skillMatch: "Skill match",
           failed: "Registry data is unavailable. Check the backend service or refresh later.",
           empty: "No matching callable Agents yet. Try another keyword or connect an Agent Node / WebSocket Agent in Agent Console.",
         };
@@ -108,10 +120,16 @@ export default async function MarketPage({
     <>
       <Topbar />
       <main className="mx-auto max-w-7xl px-6 pb-16">
-        <MarketHeader currentTags={tags} currentQ={q} locale={locale} />
+        <MarketHeader currentTags={tags} currentSkillIds={skillIDs} currentQ={q} locale={locale} />
 
         <div className="ol-market-layout">
-          <SidebarFilters currentTags={tags} currentQ={q} total={data.total} locale={locale} />
+          <SidebarFilters
+            currentTags={tags}
+            currentSkillIds={skillIDs}
+            currentQ={q}
+            total={data.total}
+            locale={locale}
+          />
 
           <section className="ol-panel">
             <div className="ol-panel-head">
@@ -121,7 +139,7 @@ export default async function MarketPage({
                   : `${copy.result} · ${data.total.toLocaleString()} ${copy.count}`}
               </strong>
               <span className="rounded-full bg-[color:var(--ol-soft)] px-3 py-1 text-[12px] font-extrabold text-[color:var(--ol-muted)]">
-                {copy.callableOnly}
+                {skillIDs.length ? `${copy.skillMatch} · ${skillIDs.join(", ")}` : copy.callableOnly}
               </span>
             </div>
 
@@ -147,7 +165,7 @@ export default async function MarketPage({
                 <Pagination
                   currentPage={data.page}
                   totalPages={totalPages}
-                  searchParams={{ tags: tags.join(","), q }}
+                  searchParams={{ tags: tags.join(","), skill_ids: skillIDs.join(","), q }}
                   locale={locale}
                 />
               </div>
@@ -161,4 +179,18 @@ export default async function MarketPage({
       </main>
     </>
   );
+}
+
+function parseSkillIDs(...values: Array<string | undefined>): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const value of values) {
+    for (const part of (value ?? "").split(",")) {
+      const skillID = part.trim();
+      if (!skillID || seen.has(skillID)) continue;
+      seen.add(skillID);
+      out.push(skillID);
+    }
+  }
+  return out.slice(0, 10);
 }

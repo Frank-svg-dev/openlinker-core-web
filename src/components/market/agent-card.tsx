@@ -28,6 +28,11 @@ interface AgentCardProps {
     description: string;
     price_per_call_cents: number;
     tags: string[];
+    skills?: Array<{
+      id: string;
+      name: string;
+      description?: string;
+    }>;
     total_calls: number;
     creator: { display_name: string };
     availability?: {
@@ -102,7 +107,15 @@ export function AgentCard({ agent, active = false, locale = "zh" }: AgentCardPro
           </Link>
         </h3>
         <p>{agent.description}</p>
-        {agent.tags.length > 0 && (
+        {(agent.skills?.length ?? 0) > 0 ? (
+          <div className="ol-agent-tags">
+            {agent.skills?.slice(0, 3).map((skill) => (
+              <span key={skill.id} className="ol-chip ol-chip-mint" title={skill.description}>
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        ) : agent.tags.length > 0 ? (
           <div className="ol-agent-tags">
             {agent.tags.slice(0, 3).map((tag, i) => (
               <span key={tag} className={`ol-chip ${tagColor(tag, i)}`}>
@@ -110,7 +123,7 @@ export function AgentCard({ agent, active = false, locale = "zh" }: AgentCardPro
               </span>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="ol-agent-meta">

@@ -20,22 +20,24 @@ const FILTER_TAGS: Array<{ label: Record<Locale, string>; tag: string }> = [
 
 interface Props {
   currentTags: string[];
+  currentSkillIds?: string[];
   currentQ: string;
   total: number;
   locale?: Locale;
 }
 
-export function SidebarFilters({ currentTags, currentQ, total, locale = "zh" }: Props) {
+export function SidebarFilters({ currentTags, currentSkillIds = [], currentQ, total, locale = "zh" }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const copy =
     locale === "zh"
-      ? { all: "全部 Agent", tags: "按标签" }
-      : { all: "All Agents", tags: "By tag" };
+      ? { all: "全部 Agent", tags: "按标签", skill: "Skill 过滤" }
+      : { all: "All Agents", tags: "By tag", skill: "Skill filter" };
 
   const pushWith = (nextTags: string[]) => {
     const sp = new URLSearchParams();
     if (nextTags.length) sp.set("tags", nextTags.join(","));
+    if (currentSkillIds.length) sp.set("skill_ids", currentSkillIds.join(","));
     if (currentQ) sp.set("q", currentQ);
     const qs = sp.toString();
     router.push(qs ? `${pathname}?${qs}` : pathname);
@@ -62,6 +64,12 @@ export function SidebarFilters({ currentTags, currentQ, total, locale = "zh" }: 
         </button>
 
         <div className="ol-filter-divider">{copy.tags}</div>
+
+        {currentSkillIds.length > 0 ? (
+          <div className="rounded-[14px] bg-[color:var(--ol-blue-soft)] px-3 py-2 text-[12px] font-bold leading-relaxed text-[color:var(--ol-blue)]">
+            {copy.skill}: <span className="font-mono">{currentSkillIds.join(", ")}</span>
+          </div>
+        ) : null}
 
         {FILTER_TAGS.map((item) => {
           const active = currentTags.includes(item.tag);
