@@ -15,7 +15,7 @@ import type { Locale } from "@/lib/i18n";
 interface Props {
   currentPage: number;
   totalPages: number;
-  searchParams: { tags?: string; skill_ids?: string; q?: string };
+  searchParams: { tags?: string; skill_ids?: string; q?: string; callable_only?: string };
   locale?: Locale;
 }
 
@@ -31,6 +31,7 @@ export function Pagination({ currentPage, totalPages, searchParams, locale = "zh
     if (searchParams.tags) sp.set("tags", searchParams.tags);
     if (searchParams.skill_ids) sp.set("skill_ids", searchParams.skill_ids);
     if (searchParams.q) sp.set("q", searchParams.q);
+    if (searchParams.callable_only) sp.set("callable_only", searchParams.callable_only);
     sp.set("page", String(page));
     return `?${sp.toString()}`;
   };

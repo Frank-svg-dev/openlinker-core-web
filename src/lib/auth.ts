@@ -24,6 +24,7 @@ const AUTH_SECRET =
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: AUTH_SECRET,
+  trustHost: process.env.AUTH_TRUST_HOST === "true",
   providers: [
     Credentials({
       // 邮箱 + 密码登录

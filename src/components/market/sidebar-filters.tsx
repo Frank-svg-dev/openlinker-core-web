@@ -22,23 +22,32 @@ interface Props {
   currentTags: string[];
   currentSkillIds?: string[];
   currentQ: string;
+  currentCallableOnly: boolean;
   total: number;
   locale?: Locale;
 }
 
-export function SidebarFilters({ currentTags, currentSkillIds = [], currentQ, total, locale = "zh" }: Props) {
+export function SidebarFilters({
+  currentTags,
+  currentSkillIds = [],
+  currentQ,
+  currentCallableOnly,
+  total,
+  locale = "zh",
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const copy =
     locale === "zh"
-      ? { all: "全部 Agent", tags: "按标签", skill: "Skill 过滤" }
-      : { all: "All Agents", tags: "By tag", skill: "Skill filter" };
+      ? { callable: "可调用 Agent", all: "全部 Agent", tags: "按标签" }
+      : { callable: "Callable Agents", all: "All Agents", tags: "By tag" };
 
-  const pushWith = (nextTags: string[]) => {
+  const pushWith = (nextTags: string[], callableOnly = currentCallableOnly) => {
     const sp = new URLSearchParams();
     if (nextTags.length) sp.set("tags", nextTags.join(","));
     if (currentSkillIds.length) sp.set("skill_ids", currentSkillIds.join(","));
     if (currentQ) sp.set("q", currentQ);
+    if (!callableOnly) sp.set("callable_only", "false");
     const qs = sp.toString();
     router.push(qs ? `${pathname}?${qs}` : pathname);
   };
@@ -50,24 +59,32 @@ export function SidebarFilters({ currentTags, currentSkillIds = [], currentQ, to
     pushWith(next);
   };
 
-  const allActive = currentTags.length === 0;
+  const tagsEmpty = currentTags.length === 0;
 
   return (
     <aside className="ol-panel ol-panel-pad">
       <div className="ol-filter-list">
         <button
           type="button"
-          onClick={() => pushWith([])}
-          className={`ol-filter-item${allActive ? " active" : ""}`}
+          onClick={() => pushWith([], true)}
+          className={`ol-filter-item${currentCallableOnly ? " active" : ""}`}
         >
-          {copy.all} <span>{total.toLocaleString()}</span>
+          {copy.callable} <span>{currentCallableOnly ? total.toLocaleString() : ""}</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => pushWith([], false)}
+          className={`ol-filter-item${!currentCallableOnly && tagsEmpty ? " active" : ""}`}
+        >
+          {copy.all} <span>{!currentCallableOnly ? total.toLocaleString() : ""}</span>
         </button>
 
         <div className="ol-filter-divider">{copy.tags}</div>
 
         {currentSkillIds.length > 0 ? (
           <div className="rounded-[14px] bg-[color:var(--ol-blue-soft)] px-3 py-2 text-[12px] font-bold leading-relaxed text-[color:var(--ol-blue)]">
-            {copy.skill}: <span className="font-mono">{currentSkillIds.join(", ")}</span>
+            {locale === "zh" ? "Skill 过滤：" : "Skill filter:"}{" "}
+            <span className="font-mono">{currentSkillIds.join(", ")}</span>
           </div>
         ) : null}
 

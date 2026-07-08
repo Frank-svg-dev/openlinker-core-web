@@ -68,13 +68,14 @@ const PAGE_SIZE = 12;
 export default async function MarketPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tags?: string; q?: string; page?: string; skill?: string; skill_ids?: string }>;
+  searchParams: Promise<{ tags?: string; q?: string; page?: string; callable_only?: string; skill?: string; skill_ids?: string }>;
 }) {
   const sp = await searchParams;
   const locale = await getLocale();
   const tags = sp.tags?.split(",").filter(Boolean) ?? [];
   const skillIDs = parseSkillIDs(sp.skill, sp.skill_ids);
   const q = sp.q ?? "";
+  const callableOnly = sp.callable_only !== "false";
   const rawPage = Number(sp.page ?? "1");
   const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
 
@@ -82,7 +83,7 @@ export default async function MarketPage({
   if (tags.length) params.set("tags", tags.join(","));
   if (skillIDs.length) params.set("skill_ids", skillIDs.join(","));
   if (q) params.set("q", q);
-  params.set("callable_only", "true");
+  if (callableOnly) params.set("callable_only", "true");
   params.set("page", String(page));
   params.set("size", String(PAGE_SIZE));
 
@@ -102,31 +103,48 @@ export default async function MarketPage({
       ? {
           result: "推荐结果",
           count: "个",
-          callableOnly: "仅展示可调用 · 健康状态优先",
-          skillMatch: "Skill 命中",
+          listingScope: skillIDs.length
+            ? `Skill 匹配 · ${skillIDs.join(", ")}`
+            : callableOnly
+              ? "仅展示可调用 · 健康状态优先"
+              : "全部公开上架 · 可调用优先排序",
           failed: "暂时无法连接 Registry 数据，请检查后端服务或稍后刷新。",
-          empty: "当前没有匹配的可调用 Agent。可以换一个关键词，或去 Agent 管理接入一个 Agent Node / WebSocket Agent。",
+          empty: callableOnly
+            ? "当前没有匹配的可调用 Agent。可以换一个关键词，或去 Agent 管理接入一个 Agent Node / WebSocket Agent。"
+            : "当前没有匹配的公开 Agent。可以换一个关键词，或去 Agent 管理公开一个 Agent。",
         }
       : {
           result: "Results",
           count: "Agents",
-          callableOnly: "Callable only · healthy status first",
-          skillMatch: "Skill match",
+          listingScope: skillIDs.length
+            ? `Skill match · ${skillIDs.join(", ")}`
+            : callableOnly
+              ? "Callable only · healthy status first"
+              : "All public listings · callable first",
           failed: "Registry data is unavailable. Check the backend service or refresh later.",
-          empty: "No matching callable Agents yet. Try another keyword or connect an Agent Node / WebSocket Agent in Agent Console.",
+          empty: callableOnly
+            ? "No matching callable Agents yet. Try another keyword or connect an Agent Node / WebSocket Agent in Agent Console."
+            : "No matching public Agents yet. Try another keyword or publish an Agent from Agent Console.",
         };
 
   return (
     <>
       <Topbar />
       <main className="mx-auto max-w-7xl px-6 pb-16">
-        <MarketHeader currentTags={tags} currentSkillIds={skillIDs} currentQ={q} locale={locale} />
+        <MarketHeader
+          currentTags={tags}
+          currentSkillIds={skillIDs}
+          currentQ={q}
+          callableOnly={callableOnly}
+          locale={locale}
+        />
 
         <div className="ol-market-layout">
           <SidebarFilters
             currentTags={tags}
             currentSkillIds={skillIDs}
             currentQ={q}
+            currentCallableOnly={callableOnly}
             total={data.total}
             locale={locale}
           />
@@ -139,7 +157,7 @@ export default async function MarketPage({
                   : `${copy.result} · ${data.total.toLocaleString()} ${copy.count}`}
               </strong>
               <span className="rounded-full bg-[color:var(--ol-soft)] px-3 py-1 text-[12px] font-extrabold text-[color:var(--ol-muted)]">
-                {skillIDs.length ? `${copy.skillMatch} · ${skillIDs.join(", ")}` : copy.callableOnly}
+                {copy.listingScope}
               </span>
             </div>
 
@@ -165,7 +183,12 @@ export default async function MarketPage({
                 <Pagination
                   currentPage={data.page}
                   totalPages={totalPages}
-                  searchParams={{ tags: tags.join(","), skill_ids: skillIDs.join(","), q }}
+                  searchParams={{
+                    tags: tags.join(","),
+                    skill_ids: skillIDs.join(","),
+                    q,
+                    callable_only: callableOnly ? undefined : "false",
+                  }}
                   locale={locale}
                 />
               </div>

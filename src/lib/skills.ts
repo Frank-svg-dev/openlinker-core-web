@@ -56,8 +56,22 @@ export const CATEGORY_ORDER: Skill["category"][] = [
 /** 单个 agent 最多绑定的 skill 数量（与后端 PATCH 限制保持一致）。 */
 export const MAX_SKILLS_PER_AGENT = 5;
 
-interface SkillsResponse {
+export interface SkillsResponse {
   items: Skill[];
+  total?: number;
+  page?: number;
+  size?: number;
+  query?: string;
+  category_filter?: string;
+  sort?: string;
+}
+
+export interface FetchSkillsOptions {
+  query?: string;
+  category?: string;
+  sort?: string;
+  page?: number;
+  size?: number;
 }
 
 /**
@@ -65,7 +79,18 @@ interface SkillsResponse {
  *
  * 失败时抛 ApiError，由调用方决定降级（如发布表单选择隐藏整个分区）。
  */
-export async function fetchSkills(): Promise<Skill[]> {
-  const data = await apiFetch<SkillsResponse>("/api/v1/skills");
+export async function fetchSkills(options: FetchSkillsOptions = {}): Promise<Skill[]> {
+  const data = await fetchSkillsPage(options);
   return data.items ?? [];
+}
+
+export async function fetchSkillsPage(options: FetchSkillsOptions = {}): Promise<SkillsResponse> {
+  const params = new URLSearchParams();
+  if (options.query) params.set("q", options.query);
+  if (options.category) params.set("category", options.category);
+  if (options.sort) params.set("sort", options.sort);
+  if (options.page) params.set("page", String(options.page));
+  if (options.size) params.set("size", String(options.size));
+  const qs = params.toString();
+  return apiFetch<SkillsResponse>(`/api/v1/skills${qs ? `?${qs}` : ""}`);
 }
