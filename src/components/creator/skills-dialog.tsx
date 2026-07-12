@@ -175,6 +175,7 @@ export function SkillsDialog({
                 value={selected}
                 onChange={setSelected}
                 max={MAX_SKILLS_PER_AGENT}
+                locale={locale}
               />
             </div>
             <div className="flex shrink-0 justify-end gap-2 border-t border-[color:var(--ol-line)] pt-3">

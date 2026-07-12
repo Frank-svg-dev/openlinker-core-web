@@ -25,6 +25,11 @@ import { SidePromo } from "@/components/market/side-promo";
 import { AgentCard } from "@/components/market/agent-card";
 import { Pagination } from "@/components/market/pagination";
 import { getLocale } from "@/lib/i18n-server";
+import {
+  fetchSkills,
+  indexSkillTranslations,
+  withSkillTranslations,
+} from "@/lib/skills";
 
 interface MarketItem {
   id: string;
@@ -86,6 +91,7 @@ export default async function MarketPage({
   if (callableOnly) params.set("callable_only", "true");
   params.set("page", String(page));
   params.set("size", String(PAGE_SIZE));
+  const skillCatalogPromise = fetchSkills().catch(() => []);
 
   let data: MarketResponse;
   let loadFailed = false;
@@ -96,6 +102,8 @@ export default async function MarketPage({
     loadFailed = true;
     data = { items: [], total: 0, page, size: PAGE_SIZE };
   }
+
+  const skillTranslations = indexSkillTranslations(await skillCatalogPromise);
 
   const totalPages = Math.max(1, Math.ceil(data.total / data.size));
   const copy =
@@ -166,7 +174,11 @@ export default async function MarketPage({
                 {data.items.map((item, idx) => (
                   <AgentCard
                     key={item.id}
-                    agent={item}
+                    agent={{
+                      ...item,
+                      skills: item.skills?.map((skill) =>
+                        withSkillTranslations(skill, skillTranslations)),
+                    }}
                     active={page === 1 && idx === 0}
                     locale={locale}
                   />

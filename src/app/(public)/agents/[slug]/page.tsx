@@ -28,6 +28,12 @@ import {
   availabilityStatusSummary,
 } from "@/lib/i18n-labels";
 import { getLocale } from "@/lib/i18n-server";
+import {
+  fetchSkills,
+  indexSkillTranslations,
+  localizedSkill,
+  withSkillTranslations,
+} from "@/lib/skills";
 
 interface AgentDetail {
   id: string;
@@ -224,13 +230,20 @@ export default async function AgentDetailPage({
     );
   }
 
-  const scores = await fetchSkillScores(slug);
+  const [scores, skillCatalog] = await Promise.all([
+    fetchSkillScores(slug),
+    fetchSkills().catch(() => []),
+  ]);
   const scoreBySkill = new Map(scores.map((s) => [s.skill_id, s]));
-  const skillsWithStatus = (agent.skills ?? []).map((s) => ({
-    id: s.id,
-    name: s.name,
-    status: (scoreBySkill.get(s.id)?.status ?? "not_run") as SkillBenchmarkStatus,
-  }));
+  const skillTranslations = indexSkillTranslations(skillCatalog);
+  const skillsWithStatus = (agent.skills ?? []).map((skill) => {
+    const enriched = withSkillTranslations(skill, skillTranslations);
+    return {
+      id: skill.id,
+      name: localizedSkill(enriched, locale).name,
+      status: (scoreBySkill.get(skill.id)?.status ?? "not_run") as SkillBenchmarkStatus,
+    };
+  });
 
   const priceUSD = (agent.price_per_call_cents / 100).toFixed(3);
   const priceMetadataDescription =

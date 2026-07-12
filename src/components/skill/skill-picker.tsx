@@ -23,6 +23,7 @@ import {
   CATEGORY_ORDER,
   MAX_SKILLS_PER_AGENT,
   categoryLabel,
+  localizedSkill,
   type Skill,
 } from "@/lib/skills";
 import type { Locale } from "@/lib/i18n";
@@ -110,8 +111,9 @@ export function SkillPicker({
           value.map((id) => {
             const s = skillById.get(id);
             const category = s ? categoryLabel(s.category, locale) : null;
+            const display = s ? localizedSkill(s, locale) : null;
             const label = s
-              ? `${category} · ${s.name}`
+              ? `${category} · ${display?.name}`
               : id;
             return (
               <button
@@ -162,6 +164,7 @@ export function SkillPicker({
                 {list.map((s) => {
                   const checked = selectedSet.has(s.id);
                   const disabled = !checked && reachedMax;
+                  const display = localizedSkill(s, locale);
                   return (
                     <li key={s.id}>
                       <label
@@ -179,15 +182,17 @@ export function SkillPicker({
                           checked={checked}
                           disabled={disabled}
                           onChange={() => toggle(s.id)}
-                          aria-label={s.name}
+                          aria-label={display.name}
                         />
                         <div className="min-w-0 flex-1">
                           <div className="font-bold text-foreground">
-                            {s.name}
+                            {display.name}
                           </div>
-                          <div className="text-[12px] leading-[1.5] text-muted-foreground">
-                            {s.description}
-                          </div>
+                          {display.description ? (
+                            <div className="text-[12px] leading-[1.5] text-muted-foreground">
+                              {display.description}
+                            </div>
+                          ) : null}
                         </div>
                       </label>
                     </li>

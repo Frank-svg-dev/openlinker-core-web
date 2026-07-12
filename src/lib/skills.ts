@@ -12,6 +12,17 @@
 
 import { apiFetch } from "@/lib/api";
 import type { Locale } from "@/lib/i18n";
+export {
+  humanizeSkillID,
+  indexSkillTranslations,
+  localizedSkill,
+  type LocalizableSkill,
+  type SkillTranslation,
+  type SkillTranslationIndex,
+  type SkillTranslations,
+  withSkillTranslations,
+} from "@/lib/skill-localization";
+import type { SkillTranslation } from "@/lib/skill-localization";
 
 export type Skill = {
   id: string;
@@ -19,6 +30,9 @@ export type Skill = {
   name: string;
   description: string;
   sort_order: number;
+  translations?: {
+    en?: SkillTranslation;
+  };
 };
 
 export const CATEGORY_LABELS: Record<Skill["category"], string> = {
@@ -70,6 +84,7 @@ export interface FetchSkillsOptions {
   query?: string;
   category?: string;
   sort?: string;
+  locale?: Locale;
   page?: number;
   size?: number;
 }
@@ -80,7 +95,7 @@ export interface FetchSkillsOptions {
  * 失败时抛 ApiError，由调用方决定降级（如发布表单选择隐藏整个分区）。
  */
 export async function fetchSkills(options: FetchSkillsOptions = {}): Promise<Skill[]> {
-  const data = await fetchSkillsPage(options);
+  const data = await fetchSkillsPage({ size: 200, ...options });
   return data.items ?? [];
 }
 
@@ -89,6 +104,7 @@ export async function fetchSkillsPage(options: FetchSkillsOptions = {}): Promise
   if (options.query) params.set("q", options.query);
   if (options.category) params.set("category", options.category);
   if (options.sort) params.set("sort", options.sort);
+  if (options.locale) params.set("locale", options.locale);
   if (options.page) params.set("page", String(options.page));
   if (options.size) params.set("size", String(options.size));
   const qs = params.toString();

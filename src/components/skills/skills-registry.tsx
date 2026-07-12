@@ -10,6 +10,7 @@ import { localizedErrorMessage } from "@/lib/api";
 import {
   CATEGORY_ORDER,
   categoryLabel as getCategoryLabel,
+  localizedSkill,
   type Skill,
 } from "@/lib/skills";
 import type { Locale } from "@/lib/i18n";
@@ -62,6 +63,10 @@ export function SkillsRegistry({ locale, skills }: { locale: Locale; skills: Ski
   const copy = skillRegistryMessages[locale];
   const categoryLabel = (category: Skill["category"]) =>
     getCategoryLabel(category, locale);
+  const localizedSkills = useMemo(
+    () => skills.map((skill) => ({ ...skill, ...localizedSkill(skill, locale) })),
+    [locale, skills],
+  );
 
   const reloadProposals = async () => {
     if (!isAuthenticated) {
@@ -108,7 +113,7 @@ export function SkillsRegistry({ locale, skills }: { locale: Locale; skills: Ski
 
   const rows = useMemo(() => {
     const term = query.trim().toLowerCase();
-    return skills
+    return localizedSkills
       .filter((skill) => {
         const filterOK = filter === ALL_FILTER || skill.category === filter;
         const queryOK =
@@ -127,7 +132,7 @@ export function SkillsRegistry({ locale, skills }: { locale: Locale; skills: Ski
         }
         return a.sort_order - b.sort_order || a.name.localeCompare(b.name);
       });
-  }, [filter, query, skills, sort]);
+  }, [filter, localizedSkills, query, sort]);
 
   const categoryCounts = useMemo(() => {
     const counts = new Map<Skill["category"], number>();

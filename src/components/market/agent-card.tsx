@@ -17,6 +17,7 @@ import {
   availabilityStatusHint,
   availabilityStatusLabel,
 } from "@/lib/i18n-labels";
+import { localizedSkill, type LocalizableSkill } from "@/lib/skills";
 import { avatarFromSlug } from "./avatar";
 
 type AvailabilityStatus = "unknown" | "healthy" | "degraded" | "unreachable" | string;
@@ -28,7 +29,7 @@ interface AgentCardProps {
     description: string;
     price_per_call_cents: number;
     tags: string[];
-    skills?: Array<{
+    skills?: Array<LocalizableSkill & {
       id: string;
       name: string;
       description?: string;
@@ -126,15 +127,18 @@ export function AgentCard({ agent, active = false, locale = "zh" }: AgentCardPro
         <p>{agent.description}</p>
         {(agent.skills?.length ?? 0) > 0 ? (
           <div className="ol-agent-tags">
-            {agent.skills?.slice(0, 3).map((skill) => (
-              <span
-                key={skill.id}
-                className="ol-chip ol-chip-mint ol-agent-tag"
-                title={skill.description ? `${skill.name} — ${skill.description}` : skill.name}
-              >
-                <span className="ol-agent-tag-label">{skill.name}</span>
-              </span>
-            ))}
+            {agent.skills?.slice(0, 3).map((skill) => {
+              const display = localizedSkill(skill, locale);
+              return (
+                <span
+                  key={skill.id}
+                  className="ol-chip ol-chip-mint ol-agent-tag"
+                  title={display.description ? `${display.name} — ${display.description}` : display.name}
+                >
+                  <span className="ol-agent-tag-label">{display.name}</span>
+                </span>
+              );
+            })}
           </div>
         ) : agent.tags.length > 0 ? (
           <div className="ol-agent-tags">

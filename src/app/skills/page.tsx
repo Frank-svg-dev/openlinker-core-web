@@ -12,7 +12,7 @@ export async function generateMetadata() {
 
 export default async function SkillsPage() {
   const locale = await getLocale();
-  const skills = await fetchSkills().catch(() => []);
+  const skills = await fetchSkills({ locale }).catch(() => []);
   const copy =
     locale === "zh"
       ? {
