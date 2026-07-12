@@ -129,7 +129,7 @@ export const skillRegistryMessages = {
     category: "Category",
     usedFor: "Used for",
     entry: "Entry",
-    usage: "Agent claims, benchmarks, MCP/A2A, and run evidence",
+    usage: "Agent capability declarations, benchmarks, MCP/A2A, and run evidence",
     findAgents: "Find Agents",
     unavailable: "Skill directory is temporarily unavailable. Try again later.",
     noMatch: "No matching Skills.",

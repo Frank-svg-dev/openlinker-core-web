@@ -61,8 +61,8 @@ export default async function AdminOverviewPage({
       title: copy.tasks,
       body:
         locale === "zh"
-          ? "分页查看任务发布、推荐、接单和交付状态，定位需要运营介入的任务。"
-          : "Review task posting, matching, claiming, and delivery status by page.",
+          ? "分页查看私有任务的能力识别、Agent 匹配和运行状态，定位需要运营介入的异常。"
+          : "Review capability parsing, Agent matching, and run status for private tasks.",
       metric: formatNumber(summary?.total_tasks ?? 0),
     },
     {
@@ -169,11 +169,6 @@ export default async function AdminOverviewPage({
           value={formatNumber(summary?.total_tasks ?? 0)}
           tone="highlight"
           href="/admin/tasks"
-        />
-        <StatCard
-          label={copy.publicTasks}
-          value={formatNumber(summary?.public_tasks ?? 0)}
-          href="/admin/tasks?visibility=public"
         />
         <StatCard
           label={copy.openTasks}

@@ -26,8 +26,8 @@ const ITEMS: Record<Locale, PreviewItem[]> = {
   },
   {
     num: 3,
-    title: "四种连接模式",
-    desc: "支持 HTTP 直连、MCP Server、Agent Node WebSocket 和 Agent Node（长轮询）。",
+    title: "三种连接模式",
+    desc: "HTTP 直连、MCP Server 或 Agent Node；Node 内部默认 WebSocket，受限网络回退 Pull v2。",
   },
   {
     num: 4,
@@ -49,8 +49,8 @@ const ITEMS: Record<Locale, PreviewItem[]> = {
     },
     {
       num: 3,
-      title: "Four connection modes",
-      desc: "Connect over direct HTTP, MCP Server, Agent Node WebSocket, or Runtime Pull.",
+      title: "Three connection modes",
+      desc: "Use direct HTTP, MCP Server, or Agent Node. The Node prefers WebSocket and falls back to Pull v2.",
     },
     {
       num: 4,

@@ -10,7 +10,6 @@ import {
   certificationStatusLabel,
   connectionModeLabel,
   deliveryStatusLabel,
-  deliveryVisibilityLabel,
   fallbackEnumLabel,
   lifecycleStatusLabel,
   taskStatusLabel,
@@ -43,13 +42,8 @@ export interface AdminSummary {
   pending_agents: number;
   certified_agents: number;
   total_tasks: number;
-  public_tasks: number;
-  private_tasks: number;
   open_tasks: number;
-  claimed_tasks: number;
   completed_tasks: number;
-  accepted_tasks: number;
-  revision_requested_tasks: number;
 }
 
 export interface AdminUser {
@@ -70,7 +64,6 @@ export interface AdminUser {
   agent_count: number;
   active_agent_count: number;
   task_count: number;
-  public_task_count: number;
   run_count: number;
   last_task_at?: string;
   last_run_at?: string;
@@ -101,7 +94,6 @@ export interface AdminAgent {
   connection_mode: string;
   recommended_task_count: number;
   chosen_task_count: number;
-  claimed_task_count: number;
   completed_task_count: number;
   last_run_at?: string;
   created_at: string;
@@ -136,32 +128,18 @@ export interface AdminTask {
   id: string;
   user_id: string;
   query: string;
-  visibility: string;
-  public_summary?: string;
   parsed_skills: string[];
   mcp_tools: string[];
   recommended_agent_count: number;
   status: string;
   chosen_agent_id?: string;
   chosen_at?: string;
-  claimed_agent_id?: string;
-  claimed_by_user_id?: string;
-  claimed_at?: string;
-  claim_run_id?: string;
   completed_at?: string;
   completion_summary?: string;
   completion_run_id?: string;
-  delivery_status: string;
-  delivery_visibility: string;
-  accepted_at?: string;
-  revision_requested_at?: string;
-  revision_note?: string;
-  published_at?: string;
   created_at: string;
   user?: AdminTaskUser;
   chosen_agent?: AdminTaskAgent;
-  claimed_agent?: AdminTaskAgent;
-  claimed_by?: AdminTaskUser;
 }
 
 export interface AdminTaskList {
@@ -333,7 +311,6 @@ export function adminCopy(locale: Locale) {
         pendingAgents: "实例认证中 Agent",
         certifiedAgents: "实例已认证 Agent",
         totalTasks: "任务总数",
-        publicTasks: "公开任务",
         openTasks: "待选择任务",
         completedTasks: "已完成任务",
         open: "打开",
@@ -353,7 +330,7 @@ export function adminCopy(locale: Locale) {
         noAgents: "没有匹配 Agent",
         noAgentsBody: "换一个搜索或状态筛选。",
         noTasks: "没有匹配任务",
-        noTasksBody: "换一个搜索、可见性或任务状态筛选。",
+        noTasksBody: "换一个搜索或任务状态筛选。",
         addUser: "添加用户",
         addUserLead:
           "创建可用邮箱密码登录的用户，并按需预设管理员或 Agent 所有者身份。",
@@ -370,8 +347,7 @@ export function adminCopy(locale: Locale) {
         agentCol: "Agent",
         taskCol: "任务",
         ownerCol: "所有者",
-        matchCol: "匹配 / 接单",
-        deliveryCol: "交付",
+        matchCol: "匹配 / 运行",
         creatorCol: "Agent 所有者",
         stateCol: "状态",
         metricsCol: "指标",
@@ -401,8 +377,6 @@ export function adminCopy(locale: Locale) {
         submitted: "已提交",
         failed: "失败",
         openStatus: "待选择",
-        accepted: "已接受",
-        revision_requested: "请求修改",
         completed: "已完成",
         in_progress: "进行中",
         matched: "已匹配",
@@ -410,7 +384,6 @@ export function adminCopy(locale: Locale) {
         draft: "草稿",
         recommended: "推荐",
         chosen: "已选择",
-        claimed: "已接单",
         run: "运行",
         taskCount: "任务",
         runCount: "调用",
@@ -441,7 +414,6 @@ export function adminCopy(locale: Locale) {
         pendingAgents: "Instance certification pending",
         certifiedAgents: "Instance-certified Agents",
         totalTasks: "Total tasks",
-        publicTasks: "Public tasks",
         openTasks: "Open tasks",
         completedTasks: "Completed tasks",
         open: "Open",
@@ -461,7 +433,7 @@ export function adminCopy(locale: Locale) {
         noAgents: "No matching agents",
         noAgentsBody: "Try another search or state filter.",
         noTasks: "No matching tasks",
-        noTasksBody: "Try another search, visibility, or task status filter.",
+        noTasksBody: "Try another search or task status filter.",
         addUser: "Add user",
         addUserLead:
           "Create an email/password user and preset admin or Agent owner roles when needed.",
@@ -478,8 +450,7 @@ export function adminCopy(locale: Locale) {
         agentCol: "Agent",
         taskCol: "Task",
         ownerCol: "Owner",
-        matchCol: "Match / Claim",
-        deliveryCol: "Delivery",
+        matchCol: "Match / Run",
         creatorCol: "Agent owner",
         stateCol: "State",
         metricsCol: "Metrics",
@@ -509,8 +480,6 @@ export function adminCopy(locale: Locale) {
         submitted: "submitted",
         failed: "failed",
         openStatus: "Open",
-        accepted: "accepted",
-        revision_requested: "revision_requested",
         completed: "completed",
         in_progress: "in_progress",
         matched: "matched",
@@ -518,7 +487,6 @@ export function adminCopy(locale: Locale) {
         draft: "Draft",
         recommended: "Recommended",
         chosen: "Chosen",
-        claimed: "Claimed",
         run: "Run",
         taskCount: "Tasks",
         runCount: "Runs",
@@ -831,7 +799,6 @@ export function statusChip(value: string): string {
     value === "public" ||
     value === "certified" ||
     value === "paid" ||
-    value === "accepted" ||
     value === "completed"
   ) {
     return "ol-chip ol-chip-green";
@@ -850,7 +817,6 @@ export function statusChip(value: string): string {
     value === "private" ||
     value === "rejected" ||
     value === "failed" ||
-    value === "revision_requested" ||
     value === "needs_agent"
   ) {
     return "ol-chip ol-chip-amber";
@@ -873,8 +839,6 @@ export function adminStatusLabel(value: string, locale: Locale): string {
     value === "matched" ||
     value === "in_progress" ||
     value === "completed" ||
-    value === "accepted" ||
-    value === "revision_requested" ||
     value === "needs_agent" ||
     value === "draft" ||
     value === "submitted"
@@ -904,13 +868,6 @@ export function adminCertificationStatusLabel(
     rejected: { zh: "实例认证未通过", en: "Instance certification rejected" },
   };
   return labels[value]?.[locale] ?? certificationStatusLabel(value, locale);
-}
-
-export function adminDeliveryVisibilityLabel(
-  value: string,
-  locale: Locale,
-): string {
-  return deliveryVisibilityLabel(value, locale);
 }
 
 export function adminConnectionModeLabel(

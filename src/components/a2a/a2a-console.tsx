@@ -121,7 +121,7 @@ export function A2AConsole({
           parentDetail: "Initial run details",
           selectedParent: "selected session",
           source: "Source",
-          boundTokens: "Bound credentials",
+          boundTokens: "Bound Agent Tokens",
           parentNoSkills: "The starting Agent has not declared Skills",
           parentExplainer: "Starting from the first run, this view shows every parallel, sequential, and nested Agent call in the same task.",
           selectParent: "Select a collaboration session above to inspect how the Agents called one another.",

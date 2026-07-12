@@ -14,16 +14,16 @@ interface ProofStat {
 
 const STATS: Record<Locale, ProofStat[]> = {
   zh: [
-    { value: "4 种", label: "Agent 连接模式" },
-    { value: "A2A / MCP", label: "开放协议入口" },
-    { value: "Run ID", label: "关联状态、事件与结果" },
-    { value: "已定义", label: "User Token 契约" },
+    { value: "3 种", label: "Agent 连接模式" },
+    { value: "WS + Pull", label: "Agent Node 双传输" },
+    { value: "Run / Attempt", label: "派发、事件与结果" },
+    { value: "User / Agent", label: "两类用户可见 Token" },
   ],
   en: [
-    { value: "4 modes", label: "Agent connections" },
-    { value: "A2A / MCP", label: "Open protocol entry points" },
-    { value: "Run ID", label: "Links status, events, and results" },
-    { value: "Defined", label: "User Token contract" },
+    { value: "3 modes", label: "Agent connections" },
+    { value: "WS + Pull", label: "Agent Node dual transport" },
+    { value: "Run / Attempt", label: "Dispatch, events, and results" },
+    { value: "User / Agent", label: "Two user-facing token types" },
   ],
 };
 

@@ -93,16 +93,16 @@ function SelfRegistrationEntry({ locale }: { locale: Locale }) {
     locale === "zh"
       ? {
           kicker: "接入方式",
-          title: "无人值守 Agent 可先生成接入凭证",
-          body: "如果你正在手动接入公网调用端点或 MCP 工具，继续填写下方表单。若是本地脚本、CLI、内网服务或 Agent Node 需要自己完成首次注册，请生成限时 Agent 接入凭证；明文只显示一次，注册后同一个 Token 继续作为运行身份。",
-          primary: "生成 Agent 接入凭证",
+          title: "无人值守 Agent 可先签发 Agent Token",
+          body: "如果你正在手动接入公网调用端点或 MCP 工具，继续填写下方表单。本地脚本、CLI、内网服务或 Agent Node 需要自行完成首次注册时，先签发限时 Agent Token；明文只显示一次，注册后同一个 Token 继续作为运行身份。",
+          primary: "签发 Agent Token",
           secondary: "继续手动接入",
         }
       : {
           kicker: "Connection method",
-          title: "Unattended Agents can start with an access credential",
-          body: "Keep using the form below when you are manually connecting a public endpoint or MCP tool. For unattended registration, create a time-limited Agent access credential whose plaintext is shown once; the same Token becomes the runtime identity after registration.",
-          primary: "Create Agent credential",
+          title: "Unattended Agents can start with an Agent Token",
+          body: "Keep using the form below when you are manually connecting a public endpoint or MCP tool. For unattended registration, issue a time-limited Agent Token whose plaintext is shown once; the same Token becomes the runtime identity after registration.",
+          primary: "Issue Agent Token",
           secondary: "Continue manual setup",
         };
 
@@ -146,7 +146,7 @@ function PublishHead({ activePill, locale }: { activePill: string | null; locale
       ? {
           kicker: "我的 / 接入 Agent",
           heading: "把 Agent 接入当前实例",
-          lead: "手动接入可配置公网 HTTPS、Agent Node WebSocket、Agent Node（长轮询）或 MCP 工具包装；无人值守 Agent 可先生成接入凭证，让 Agent 自己完成注册。",
+          lead: "手动接入可选择公网 HTTPS、MCP 工具包装或 Agent Node。Agent Node 默认走 WebSocket，网络受限时自动切换 Pull v2；无人值守 Agent 可先创建 Agent Token，让它自己完成注册。",
           later: "创建后可继续",
           progressAria: "接入进度",
           pills: [
@@ -159,7 +159,7 @@ function PublishHead({ activePill, locale }: { activePill: string | null; locale
       : {
           kicker: "My / Connect Agent",
           heading: "Connect an Agent to this instance",
-          lead: "Connect manually with HTTPS, Agent Node WebSocket, Runtime Pull, or an MCP tool wrapper. For unattended Agents, create an access credential first so the Agent can register itself.",
+          lead: "Connect through public HTTPS, an MCP tool wrapper, or Agent Node. Agent Node prefers WebSocket and falls back to Pull v2; unattended Agents can start with an Agent Token and self-register.",
           later: "Available after creation",
           progressAria: "Connection progress",
           pills: [

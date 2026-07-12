@@ -584,7 +584,7 @@ function AgentItemRow({
           settings: "Settings",
           settingsTitle: "Edit basic information, connection, and visibility",
           runHistory: "Run history",
-          runHistoryTitle: "View invocations triggered by users, access credentials, or MCP",
+          runHistoryTitle: "View invocations triggered by users, User Tokens, or MCP",
           benchmarkTitle: "Run Benchmarks for declared Skills; passed ones show a Benchmark verified badge on the detail page",
           deliveryTitle: "Manage notification delivery targets and delivery history",
           delivery: "Delivery",

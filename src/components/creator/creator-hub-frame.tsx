@@ -23,12 +23,12 @@ const NAV_ITEMS: ReadonlyArray<{
   {
     id: "access",
     label: { zh: "注册邀请", en: "Registration Invites" },
-    desc: { zh: "生成 Agent 接入凭证", en: "Create Agent credentials" },
+    desc: { zh: "签发 Agent Token", en: "Issue an Agent Token" },
     href: "/hub/access",
   },
   {
     id: "tokens",
-    label: { zh: "Agent 接入凭证", en: "Agent Credentials" },
+    label: { zh: "Agent Token", en: "Agent Tokens" },
     desc: { zh: "查看、排序、撤销", en: "Review, sort, revoke" },
     href: "/hub/tokens",
   },
@@ -73,8 +73,8 @@ export function CreatorHubFrame({
           kicker: coreCopy ? "自托管 Agent 管理" : "Agent 所有者工作台",
           heading: coreCopy ? "接入、验证并维护你的 Agent" : "管理你拥有的 Agent",
           lead: coreCopy
-            ? "在一个工作区管理 Agent 状态、连接方式、接入凭证、Skill、能力测评、运行记录与跨节点同步。"
-            : "查看 Agent 状态，维护连接方式、接入凭证、跨节点同步、审批和 Skill 声明。",
+            ? "在一个工作区管理 Agent 状态、连接方式、Agent Token、Skill、能力测评、运行记录与跨节点同步。"
+            : "查看 Agent 状态，维护连接方式、Agent Token、跨节点同步、审批和 Skill 声明。",
           publish: "+ 接入 Agent",
         }
       : {
@@ -83,8 +83,8 @@ export function CreatorHubFrame({
           kicker: coreCopy ? "Self-hosted Agent Console" : "Agent owner workspace",
           heading: coreCopy ? "Connect, verify, and maintain your Agents" : "Manage the Agents you own",
           lead: coreCopy
-            ? "Manage Agent status, connection modes, onboarding credentials, Skills, benchmarks, run records, and cross-node sync in one workspace."
-            : "Review Agent status and maintain connection modes, credentials, cross-node sync, approvals, and Skill claims.",
+            ? "Manage Agent status, connection modes, Agent Tokens, Skills, benchmarks, run records, and cross-node sync in one workspace."
+            : "Review Agent status and maintain connection modes, Agent Tokens, cross-node sync, approvals, and Skill claims.",
           publish: "+ Connect Agent",
         };
 
@@ -147,12 +147,12 @@ export function CreatorHubGuide({
       ? {
           title: coreCopy ? "从接入到运行" : "Agent 管理指南",
           body: coreCopy
-            ? "这里集中管理自托管实例中的 Agent、接入凭证、开放协议配置和运行记录。"
-            : "这里集中管理你拥有的 Agent、接入凭证、跨节点同步和审批。",
+            ? "这里集中管理自托管实例中的 Agent、Agent Token、开放协议配置和运行记录。"
+            : "这里集中管理你拥有的 Agent、Agent Token、跨节点同步和审批。",
           guide: {
             agents: "查看每个 Agent 的状态、连接方式、调用统计和管理入口。",
-            access: "生成限时接入凭证；明文仅显示一次，注册后同一个 Agent Token 继续作为运行身份。",
-            tokens: "查看接入凭证的状态，并撤销不再使用的凭证。",
+            access: "签发限时 Agent Token；明文仅显示一次，注册后同一个 Token 继续作为运行身份。",
+            tokens: "查看 Agent Token 状态，并撤销不再使用的 Token。",
             bridge: "选择 Registry Node，把允许公开的 Agent 条目同步到其他节点。",
             approvals: "集中确认需要人工审核的高风险动作。",
             skills: "为 Agent 声明 Skill，方便按能力查找，也用于能力校验。",
@@ -163,12 +163,12 @@ export function CreatorHubGuide({
       : {
           title: coreCopy ? "From connection to runs" : "Agent Console guide",
           body: coreCopy
-            ? "Manage Agents, onboarding credentials, open-protocol settings, and run records for this self-hosted instance."
-            : "Manage the Agents you own, their credentials, cross-node sync, and approvals.",
+            ? "Manage Agents, Agent Tokens, open-protocol settings, and run records for this self-hosted instance."
+            : "Manage the Agents you own, their Agent Tokens, cross-node sync, and approvals.",
           guide: {
             agents: "Review each Agent's status, connection mode, call metrics, and management entry points.",
-            access: "Create a time-limited credential whose plaintext is shown once; the same Agent Token becomes the runtime identity after registration.",
-            tokens: "Review credential status and revoke credentials that are no longer needed.",
+            access: "Create a time-limited Agent Token whose plaintext is shown once; the same Token becomes the runtime identity after registration.",
+            tokens: "Review Agent Token status and revoke Tokens that are no longer needed.",
             bridge: "Choose a Registry Node and sync Agent records that are allowed to be public.",
             approvals: "Review high-risk actions that require a person to approve them.",
             skills: "Declare Agent Skills for Registry search and capability checks.",

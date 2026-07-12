@@ -68,7 +68,7 @@ export default async function AdminRuntimeNodesPage({
         title: "运行节点",
         lead: "查看负责执行私有 Agent 的 Node。先排空再维护；撤销会立即让设备身份和现有连接失效。",
         total: "节点总数",
-        active: "正常接单",
+        active: "可接收运行",
         draining: "正在排空",
         revoked: "已撤销",
         capacity: "总容量",

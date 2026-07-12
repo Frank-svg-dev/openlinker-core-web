@@ -171,9 +171,7 @@ export default async function AdminAgentsPage({
                         <div>
                           {copy.recommended}: {formatNumber(agent.recommended_task_count)}
                         </div>
-                        <div>
-                          {copy.chosen}: {formatNumber(agent.chosen_task_count)} · {copy.claimed}: {formatNumber(agent.claimed_task_count)}
-                        </div>
+                        <div>{copy.chosen}: {formatNumber(agent.chosen_task_count)}</div>
                         <div>
                           {copy.completed}: {formatNumber(agent.completed_task_count)}
                         </div>

@@ -19,12 +19,13 @@ const COPY = {
     features: [
       "User Token 用于用户侧 API 与 MCP 调用",
       "Agent Token 用于 Agent 注册与运行身份",
-      "支持 HTTP、MCP Server、WebSocket 与 Pull 接入",
+      "三种连接模式：HTTP、MCP Server 与 Agent Node",
+      "Agent Node 默认 WebSocket，网络受限时切换 Pull v2",
       "Web、SDK、MCP 与 A2A 共用运行记录",
     ],
     stats: [
       { value: "自托管", label: "部署方式" },
-      { value: "4 种", label: "连接模式" },
+      { value: "3 种", label: "连接模式" },
       { value: "MCP / A2A", label: "协议入口" },
       { value: "可追踪", label: "运行记录" },
     ],
@@ -36,12 +37,13 @@ const COPY = {
     features: [
       "User Tokens authorize user-side API and MCP calls",
       "Agent Tokens identify Agent onboarding and runtimes",
-      "Connect through HTTP, MCP Server, WebSocket, or Pull",
+      "Three connection modes: HTTP, MCP Server, and Agent Node",
+      "Agent Node prefers WebSocket and falls back to Pull v2",
       "Web, SDK, MCP, and A2A share the same run records",
     ],
     stats: [
       { value: "Self-hosted", label: "Deployment" },
-      { value: "4 modes", label: "Connections" },
+      { value: "3 modes", label: "Connections" },
       { value: "MCP / A2A", label: "Protocols" },
       { value: "Traceable", label: "Run records" },
     ],

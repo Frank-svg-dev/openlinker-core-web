@@ -231,7 +231,7 @@ export default async function AdminUsersPage({
                       </td>
                       <td className="border-y border-[color:var(--ol-line)] px-3 py-3 text-[12px] text-[color:var(--ol-muted)]">
                         <div>
-                          {copy.taskCount}: {formatNumber(user.task_count)} / {formatNumber(user.public_task_count)}
+                          {copy.taskCount}: {formatNumber(user.task_count)}
                         </div>
                         <div>
                           {copy.runCount}: {formatNumber(user.run_count)}

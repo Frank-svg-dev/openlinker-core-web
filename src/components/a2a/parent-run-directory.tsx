@@ -115,7 +115,7 @@ export function ParentRunDirectory({
           running: "Running",
           source: "Source",
           context: "Session",
-          boundTokens: "Bound credentials",
+          boundTokens: "Bound Agent Tokens",
           prev: "Previous",
           next: "Next",
           page: (page: number, pages: number) => `Page ${page} / ${pages}`,

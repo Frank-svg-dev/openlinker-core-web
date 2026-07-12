@@ -32,7 +32,7 @@ const COPY = {
       },
       {
         title: "Cookie、令牌与敏感信息",
-        body: "Core Web 使用必要 Cookie 维持登录会话。User Token、Agent 接入凭证和回调密钥应按密钥管理，不要写入公开 Issue、截图或运行输入。实例运营方可以在部署层增加自己的分析、代理或安全组件，这些组件应另行说明。",
+        body: "Core Web 使用必要 Cookie 维持登录会话。User Token、Agent Token 和回调密钥应按密钥管理，不要写入公开 Issue、截图或运行输入。实例运营方可以在部署层增加自己的分析、代理或安全组件，这些组件应另行说明。",
       },
       {
         title: "保留、更正与删除",
@@ -63,7 +63,7 @@ const COPY = {
       },
       {
         title: "Cookies, Tokens, and Sensitive Data",
-        body: "Core Web uses a necessary cookie to maintain the sign-in session. Treat User Tokens, Agent onboarding credentials, and callback secrets as credentials; do not put them in public issues, screenshots, or run inputs. An operator may add analytics, proxy, or security components at deployment time and should document those separately.",
+        body: "Core Web uses a necessary cookie to maintain the sign-in session. Treat User Tokens, Agent Tokens, and callback secrets as secrets; do not put them in public issues, screenshots, or run inputs. An operator may add analytics, proxy, or security components at deployment time and should document those separately.",
       },
       {
         title: "Retention, Correction, and Deletion",

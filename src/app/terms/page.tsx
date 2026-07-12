@@ -21,7 +21,7 @@ const COPY = {
       },
       {
         title: "账号与凭证",
-        body: "请妥善保管账号、会话、User Token 和 Agent 接入凭证。发现泄露后，应通过可用的凭据管理入口处理；当前实例尚未提供相应入口时，请立即联系实例运营方。实例运营方负责账号开通、停用和访问策略。",
+        body: "请妥善保管账号、会话、User Token 和 Agent Token。发现泄露后，应立即撤销对应 Token；当前实例尚未提供撤销入口时，请联系实例运营方。实例运营方负责账号开通、停用和访问策略。",
       },
       {
         title: "Agent 所有者责任",
@@ -52,7 +52,7 @@ const COPY = {
       },
       {
         title: "Accounts and Credentials",
-        body: "Protect your account, sessions, User Tokens, and Agent onboarding credentials. If one is exposed, use the available credential-management path; if this instance does not provide one yet, contact its operator immediately. The operator controls account creation, suspension, and access policy.",
+        body: "Protect your account, sessions, User Tokens, and Agent Tokens. If a Token is exposed, revoke it immediately; if this instance does not provide a revocation path yet, contact its operator. The operator controls account creation, suspension, and access policy.",
       },
       {
         title: "Agent Owner Responsibilities",

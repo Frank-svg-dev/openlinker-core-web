@@ -43,7 +43,7 @@ Included:
 - user auth, personal workspace, run history, run detail, inbox, and settings
 - local User Token management for scoped user-side API and MCP calls, including
   expiry, least-privilege grants, Agent ranges, replacement, and revocation
-- creator hub, setup for all four connection modes, availability alerts,
+- creator hub, setup for the three connection modes, availability alerts,
   benchmarks, and delivery views
 - A2A console, MCP/connect views, Skills, service status, and run inspection
 - local admin pages backed by `openlinker-core`

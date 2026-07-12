@@ -233,12 +233,8 @@ const TASK_STATUS_LABELS: LabelMap = {
   matched: { zh: "已匹配", en: "Matched" },
   in_progress: { zh: "进行中", en: "In progress" },
   completed: { zh: "已完成", en: "Completed" },
-  accepted: { zh: "已接受", en: "Accepted" },
-  revision_requested: { zh: "请求修改", en: "Revision requested" },
   needs_agent: { zh: "需要 Agent", en: "Needs Agent" },
   draft: { zh: "草稿", en: "Draft" },
-  submitted: { zh: "已提交", en: "Submitted" },
-  failed: { zh: "失败", en: "Failed" },
 };
 
 const DELIVERY_STATUS_LABELS: LabelMap = {
@@ -246,16 +242,8 @@ const DELIVERY_STATUS_LABELS: LabelMap = {
   submitted: { zh: "已提交", en: "Submitted" },
   success: { zh: "成功", en: "Success" },
   failed: { zh: "失败", en: "Failed" },
-  accepted: { zh: "已接受", en: "Accepted" },
-  revision_requested: { zh: "请求修改", en: "Revision requested" },
   canceled: { zh: "已取消", en: "Canceled" },
   timeout: { zh: "超时", en: "Timed out" },
-};
-
-const DELIVERY_VISIBILITY_LABELS: LabelMap = {
-  public: { zh: "公开交付", en: "Public delivery" },
-  private: { zh: "私有交付", en: "Private delivery" },
-  owner_only: { zh: "仅 Agent 所有者可见", en: "Agent owner only" },
 };
 
 const BENCHMARK_STATUS_LABELS: LabelMap = {
@@ -438,10 +426,6 @@ export function taskStatusLabel(value: string | null | undefined, locale: Locale
 
 export function deliveryStatusLabel(value: string | null | undefined, locale: Locale): string {
   return labelFrom(DELIVERY_STATUS_LABELS, value, locale);
-}
-
-export function deliveryVisibilityLabel(value: string | null | undefined, locale: Locale): string {
-  return labelFrom(DELIVERY_VISIBILITY_LABELS, value, locale);
 }
 
 export function benchmarkStatusLabel(value: string | null | undefined, locale: Locale): string {
