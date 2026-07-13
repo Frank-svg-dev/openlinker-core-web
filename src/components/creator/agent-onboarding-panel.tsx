@@ -114,9 +114,9 @@ type RuntimeWorkbench = {
   runtime: {
     runtime_contract_id: string;
     runtime_contract_digest: string;
-    transport_policy: "ws_primary_pull_v2_fallback" | string;
+    transport_policy: "ws_primary_long_poll_fallback" | string;
     primary_transport: "websocket" | string;
-    fallback_transport: "pull_v2" | string;
+    fallback_transport: "long_poll" | string;
     connection_status: "online" | "draining" | "offline" | "not_applicable" | string;
     active_node_count: number;
     active_session_count: number;
