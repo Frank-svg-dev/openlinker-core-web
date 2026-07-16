@@ -7,15 +7,18 @@ OpenLinker Core Web 从 `main` 发布，前提是 CI 和本地发布检查都通
 
 ## 发布前检查
 
-1. 确认 `README.md`、`CONTRIBUTING.md`、`SECURITY.md`、`SUPPORT.md` 和示例是最新的。
+1. 确认 `README.md` 与 `README.zh-CN.md` 对 Core/Hosted、认证、SDK Runtime 和
+   Agent Node Adapter 边界的描述一致，并确认 `CONTRIBUTING`、`SECURITY`、`SUPPORT`
+   和示例是最新的。private package 版本不是部署 release 标识。
 2. 确认 `CHANGELOG.md` 描述了用户可见 UI、路由和 Core API 兼容性变化。
 3. 运行 `npm audit` 并审查结果。
 4. 运行 `npm run lint`。
 5. 运行 `npx tsc --noEmit`。
 6. 运行 `npm run build`。
 7. 运行 `npm run test:a2a-session`。
-8. 在干净 checkout 上运行源码 secret scan，例如 `gitleaks dir --redact .`。
-9. 确认 `.env.local`、`.next`、`node_modules`、含隐私截图和构建产物没有被跟踪。
+8. 运行 `npm run test:agent-library-card` 和 `npm run check:i18n`。
+9. 在干净 checkout 上运行源码 secret scan，例如 `gitleaks dir --redact .`。
+10. 确认 `.env.local`、`.next`、`node_modules`、含隐私截图和构建产物没有被跟踪。
 
 ## 打 tag
 

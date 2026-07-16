@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
-  "description": "Open-source self-hosted UI for the OpenLinker Agent Registry, A2A/MCP invocation, run records, and Agent runtime operations.",
+  "description": "Self-hosted Next.js UI for OpenLinker Core: Agent registry, User Tokens, runs, Runtime Worker setup, A2A/MCP tools, and instance administration.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OpenLinker-ai/openlinker-core-web.git"
@@ -16,12 +16,15 @@
     "openlinker",
     "ai-agents",
     "agent-registry",
-    "agent-orchestration",
+    "user-tokens",
     "a2a",
     "mcp",
-    "runtime-gateway",
+    "runtime-worker",
     "self-hosted-agents",
     "nextjs",
+    "react",
+    "typescript",
+    "admin-dashboard",
     "self-hosted"
   ],
   "engines": {

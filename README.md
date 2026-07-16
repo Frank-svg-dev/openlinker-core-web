@@ -12,7 +12,7 @@ want to manage Agents, accounts, and run data on their own infrastructure.
 > |-----------|---------|-------------|
 > | `openlinker-core` | Backend API server | ✅ Yes |
 > | `openlinker-core-web` ← **this repo** | Self-hosted frontend for core | ✅ Yes |
-> | Hosted product frontend | openlinker.ai hosted service | ❌ Closed source |
+> | Hosted product frontend | Separate openlinker.ai hosted service | Separate product |
 >
 > This repository follows the `openlinker-core` API boundary. Operators choose
 > their own domain, access model, retention, and operations policy. Hosted accounts,
@@ -30,6 +30,10 @@ This frontend is pre-1.0 and follows `openlinker-core` API evolution. Route
 names, forms, and API response handling can change while the Core contract is
 being stabilized.
 
+The `package.json` version belongs to a private application package and is not a
+published npm version. Use the Git tag, image label, and coordinated Core
+compatibility record to identify a deployment release.
+
 User Token management is part of the Core contract. Core owns local issuance
 and verification, while the settings UI supports creating, listing, tightening,
 replacing, and revoking tokens. Expiration and Agent-scoped grants can be set at
@@ -40,7 +44,8 @@ issuance; plaintext token values are shown only once.
 Included:
 
 - public Agent Registry, Agent detail pages, and callable playground
-- user auth, personal workspace, run history, run detail, inbox, and settings
+- email/password registration and sign-in, personal workspace, run history,
+  run detail, inbox, and settings
 - local User Token management for scoped user-side API and MCP calls, including
   expiry, least-privilege grants, Agent ranges, replacement, and revocation
 - creator hub, setup for the three connection modes, availability alerts,
@@ -51,30 +56,39 @@ Included:
 
 Separated from the Core API boundary:
 
+- hosted quick login, account recovery, and managed-account authentication
+- service listings, service orders, seller operations, and hosted Agent-market operations
 - wallet, charges, withdrawals, Stripe, and pricing flows
 - openlinker.ai managed account, token-policy, and commercial access dashboards
 - finance administration and hosted marketplace ranking controls
 - hosted-only managed account features outside the Core contract
 
+The bundled Core Web authentication UI currently exposes email/password
+registration and sign-in. Configuring a Google or GitHub provider in Core does
+not add hosted-style quick-login buttons to this frontend.
+
 ## Open-source Architecture
 
-Core Web is a self-hosted UI over Core-owned APIs. If a hosted deployment adds a
-bridge, it should stay outside this repository and talk to Core through the same
-public boundary.
+Core Web is a self-hosted UI over Core-owned APIs. A Hosted execution bridge
+stays outside this repository, uses a protected Core boundary, and never routes
+commercial account or order APIs through Core Web.
 
 ```mermaid
 flowchart LR
   Browser["Browser"] --> CoreWeb["openlinker-core-web<br/>Next.js UI + API proxy"]
   CoreWeb -->|"browser / server component API calls"| Core["openlinker-core<br/>auth / registry / runs / admin"]
 
-  SDKs["openlinker-js / openlinker-go"] -->|"same Core API contract"| Core
-  AgentNode["openlinker-agent-node"] -->|"OpenLinker Runtime WebSocket + long-poll fallback<br/>mTLS / lease / cancel / result ACK"| Core
+  Clients["Go / TypeScript / Python clients"] -->|"same Core API contract"| Core
+  Workers["Go / TypeScript / Python SDK Runtime Workers"] -->|"mTLS / WebSocket or long polling"| Core
+  Workers -->|"invoke"| Handlers["Application handlers"]
+  AgentNode["openlinker-agent-node<br/>temporary Adapter"] -->|"inject legacy handler"| GoWorker["Go SDK Runtime Worker"]
+  GoWorker -->|"same Runtime contract"| Core
 
   Core -->|"direct_http"| HTTPAgent["Public HTTPS Agent"]
   Core -->|"mcp_server"| MCPAgent["Remote MCP / JSON-RPC server"]
-  AgentNode -->|"adapter call"| Backend["Agent backend"]
+  AgentNode -->|"HTTP / command / A2A / Codex"| Backend["Existing Agent backend"]
 
-  HostedBridge["Hosted Bridge<br/>optional deployment adapter"] -.->|"authorized Core APIs"| Core
+  HostedBridge["Hosted execution bridge<br/>outside Core Web"] -.->|"protected Core execution APIs"| Core
 ```
 
 ## Quick Start
@@ -94,7 +108,7 @@ cp .env.local.example .env.local
 Install dependencies and start the development server:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -131,7 +145,9 @@ npm run lint
 npx tsc --noEmit
 npm run build
 npm run start
+npm run check:i18n
 npm run test:a2a-session
+npm run test:agent-library-card
 ```
 
 ## Docker
